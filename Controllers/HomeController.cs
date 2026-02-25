@@ -17,7 +17,10 @@ namespace BookShelf.Controllers
         {
             return View();
         }
-
+        public IActionResult Category()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

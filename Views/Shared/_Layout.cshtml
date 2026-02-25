@@ -1,5 +1,13 @@
 ﻿@{
-    bool isLoggedIn = true;   // 🔴 CHANGE THIS: true = logged in, false = guest
+    bool isLoggedIn = true;   // 🔴 change true/false to test
+
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+    Func<string, string, string> isActive = (controller, action) =>
+    {
+        return currentController == controller && currentAction == action ? "active" : "";
+    };
 }
 
 <!DOCTYPE html>
@@ -8,7 +16,6 @@
     <title>BookShelf</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Nunito:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
 
     <link rel="stylesheet"
@@ -17,7 +24,7 @@
 
 <body>
 
-    <!-- HEADER FULL WIDTH -->
+    <!-- ================= HEADER ================= -->
     <div class="header">
 
         <div class="header-left">
@@ -41,47 +48,147 @@
             else
             {
                 <!-- BEFORE LOGIN -->
-                <a href="/Account/Login" style="color:#7b2f2f;font-weight:600;text-decoration:none;">Login</a>
-                <a href="/Account/Register" style="color:#7b2f2f;font-weight:600;text-decoration:none;">Sign up</a>
+                <a href="/Account/Login" class="header-link">Login</a>
+                <a href="/Account/Register" class="header-link">Sign up</a>
             }
 
         </div>
-
     </div>
 
+    <!-- ================= MAIN ================= -->
     <div class="main-container">
 
-        <!-- SIDEBAR -->
+        <!-- ========== SIDEBAR ========== -->
         <div class="sidebar">
             <ul>
-                <li class="active"><i class="fa fa-home"></i><span>Dashboard</span></li>
-                <li><i class="fa fa-th-large"></i><span>Category</span></li>
+
+                <!-- DASHBOARD -->
+                <li class="@isActive("Home", "Index")">
+                    <a href="/Home/Index">
+                        <i class="fa fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- CATEGORY -->
+                <li class="@isActive("Home", "Category")">
+                    <a href="/Home/Category">
+                        <i class="fa fa-th-large"></i>
+                        <span>Category</span>
+                    </a>
+                </li>
 
                 @if (isLoggedIn)
                 {
-                    <li><i class="fa fa-cart-shopping"></i><span>Cart</span></li>
-                    <li><i class="fa fa-heart"></i><span>Wishlist</span></li>
-                    <li><i class="fa fa-box"></i><span>My Orders</span></li>
-                    <li><i class="fa fa-upload"></i><span>Upload PDF</span></li>
-                    <li><i class="fa fa-book-open"></i><span>Upload Book</span></li>
-                    <li><i class="fa fa-book"></i><span>E-Books</span></li>
-                    <li><i class="fa fa-info-circle"></i><span>About</span></li>
-                    <li><i class="fa fa-right-from-bracket"></i><span>Logout</span></li>
+                    <!-- ===== LOGGED IN MENU ===== -->
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-cart-shopping"></i>
+                            <span>Cart</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-heart"></i>
+                            <span>Wishlist</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-box"></i>
+                            <span>My Orders</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-upload"></i>
+                            <span>Upload PDF</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-book-open"></i>
+                            <span>Upload Book</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-book"></i>
+                            <span>E-Books</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-info-circle"></i>
+                            <span>About</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
                 }
                 else
                 {
-                    <!-- REDIRECT TO LOGIN -->
-                    <li><a href="/Account/Login"><i class="fa fa-cart-shopping"></i><span>Cart</span></a></li>
-                    <li><a href="/Account/Login"><i class="fa fa-heart"></i><span>Wishlist</span></a></li>
-                    <li><a href="/Account/Login"><i class="fa fa-upload"></i><span>Upload PDF</span></a></li>
-                    <li><a href="/Account/Login"><i class="fa fa-book-open"></i><span>Upload Book</span></a></li>
-                    <li><a href="/Account/Login"><i class="fa fa-book"></i><span>E-Books</span></a></li>
-                    <li><i class="fa fa-info-circle"></i><span>About</span></li>
+                    <!-- ===== GUEST MENU ===== -->
+
+                    <li>
+                        <a href="/Account/Login">
+                            <i class="fa fa-cart-shopping"></i>
+                            <span>Cart</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/Account/Login">
+                            <i class="fa fa-heart"></i>
+                            <span>Wishlist</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/Account/Login">
+                            <i class="fa fa-upload"></i>
+                            <span>Upload PDF</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/Account/Login">
+                            <i class="fa fa-book-open"></i>
+                            <span>Upload Book</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/Account/Login">
+                            <i class="fa fa-book"></i>
+                            <span>E-Books</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-info-circle"></i>
+                            <span>About</span>
+                        </a>
+                    </li>
                 }
+
             </ul>
         </div>
 
-        <!-- CONTENT -->
+        <!-- ========== PAGE CONTENT ========== -->
         <div class="content">
             @RenderBody()
         </div>

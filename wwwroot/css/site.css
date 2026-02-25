@@ -28,6 +28,7 @@ body {
     height: 29px;
     object-fit: contain;
 }
+
 /* RIGHT LIGHT */
 .header-right {
     flex: 1;
@@ -68,8 +69,26 @@ body {
         cursor: pointer;
     }
 
-    .sidebar .active {
-        background: rgba(130,56,56,0.70);
+        /* ACTIVE MENU */
+        .sidebar li.active {
+            background: rgba(130,56,56,0.70);
+        }
+
+    /* IMPORTANT FIX */
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+        color: white;
+        width: 100%;
+    }
+
+    /* ICON SIZE SAME */
+    .sidebar i {
+        width: 22px;
+        text-align: center;
+        font-size: 18px;
     }
 
 /* CONTENT */
@@ -104,6 +123,13 @@ body {
     cursor: pointer;
 }
 
+/* HEADER LINKS */
+.header-link {
+    color: #7b2f2f;
+    font-weight: 600;
+    text-decoration: none;
+}
+
 /* GRID */
 .book-grid {
     display: grid;
@@ -119,23 +145,20 @@ body {
     padding: 15px;
     text-align: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    /* smooth animation */
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer;
 }
 
-    /* POP OUT HOVER */
     .book-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 12px 25px rgba(0,0,0,0.18);
     }
+
     .book-card img {
         width: 100%;
         height: 260px;
         object-fit: cover;
     }
-
-
 
 .price {
     margin: 10px 0;
