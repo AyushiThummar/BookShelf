@@ -8,5 +8,17 @@ namespace BookShelf.Controllers
         {
             return View();
         }
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+        public IActionResult Users()
+        {
+            return View();
+        }
+        public IActionResult Scoreboard()
+        {
+            return View();
+        }
     }
 }
