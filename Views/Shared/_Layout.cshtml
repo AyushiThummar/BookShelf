@@ -109,8 +109,8 @@
                         </a>
                     </li>
 
-                    <li>
-                        <a href="#">
+                    <li class="@isActive("Books", "UploadBook")">
+                        <a asp-controller="Books" asp-action="UploadBook">
                             <i class="fa fa-book-open"></i>
                             <span>Upload Book</span>
                         </a>
@@ -164,8 +164,8 @@
                         </a>
                     </li>
 
-                    <li>
-                        <a href="/Account/Login">
+                    <li class="@isActive("Books", "UploadBook")">
+                        <a asp-controller="Books" asp-action="UploadBook">
                             <i class="fa fa-book-open"></i>
                             <span>Upload Book</span>
                         </a>

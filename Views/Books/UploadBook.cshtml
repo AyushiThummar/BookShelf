@@ -1,0 +1,398 @@
+﻿@* ============================================================
+   Views/Books/UploadBook.cshtml
+   Static page — ASP.NET Core MVC
+   ============================================================ *@
+
+@{
+    ViewData["Title"] = "Upload Book";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/upload-book.css" />
+</head>
+<body>
+
+<div class="upload-page">
+
+    <!-- ── HEADER ── -->
+    <div class="page-header">
+        <a href="/Home/Index" class="btn-back" title="Go Back">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+        <h1 class="page-title">Upload Book</h1>
+    </div>
+
+    <!-- ── MAIN LAYOUT ── -->
+    <div class="upload-layout">
+
+        <!-- ── LEFT: PHOTO PANEL ── -->
+        <div class="photo-panel">
+            <img id="bookPreview"
+                 class="book-preview-img"
+                 src="https://placehold.co/200x300/e8d5c4/7a3030?text=Book+Cover"
+                 alt="Book Cover" />
+            <input type="file" id="photoInput" accept="image/*" />
+            <button class="btn-upload-photo" type="button"
+                    onclick="document.getElementById('photoInput').click()">
+                <i class="fa fa-upload"></i> Upload Photo
+            </button>
+        </div>
+
+        <!-- ── RIGHT: FORM PANEL ── -->
+        <div class="form-panel">
+
+            <!-- BOOK DETAILS -->
+            <div class="section-title">Book Details</div>
+
+            <!-- Row 1: Book Title | Selling Price -->
+            <div class="form-row">
+                <div class="field-group">
+                    <label class="field-label" for="bookTitle">Book Title <span class="req">*</span></label>
+                    <input class="field-input" id="bookTitle" type="text"
+                           placeholder="e.g. Mathematics Part I" />
+                    <span class="error-msg" id="err-bookTitle">Book title is required.</span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="sellingPrice">Selling Price (&#8377;) <span class="req">*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">&#8377;</span>
+                        <input class="field-input" id="sellingPrice" type="number"
+                               min="0" placeholder="e.g. 140" />
+                    </div>
+                    <span class="error-msg" id="err-sellingPrice">Enter a valid selling price.</span>
+                </div>
+            </div>
+
+            <!-- Row 2: Author | Actual Price -->
+            <div class="form-row">
+                <div class="field-group">
+                    <label class="field-label" for="author">Author <span class="req">*</span></label>
+                    <input class="field-input" id="author" type="text"
+                           placeholder="e.g. NCERT" />
+                    <span class="error-msg" id="err-author">Author name is required.</span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="actualPrice">
+                        Actual Price (&#8377;)
+                        <span style="font-weight:400;color:#999;font-size:11px;">MRP</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">&#8377;</span>
+                        <input class="field-input" id="actualPrice" type="number"
+                               min="0" placeholder="e.g. 240" />
+                    </div>
+                    <span class="error-msg" id="err-actualPrice">Enter a valid price.</span>
+                </div>
+            </div>
+
+            <!-- Row 3: Category | Book Condition -->
+            <div class="form-row">
+                <div class="field-group">
+                    <label class="field-label" for="category">Category <span class="req">*</span></label>
+                    <div class="select-wrapper">
+                        <select class="field-select" id="category" onchange="handleCategoryChange()">
+                            <option value="" disabled selected>Select category</option>
+                            <option value="academic">Academic / Education</option>
+                                <option value="kids">Kids</option>
+                                <option value="poetry">Poetry</option>
+                                <option value="fiction">Fiction</option>
+                                <option value="religion">Religion</option>
+                                <option value="motivation">Motivation</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <span class="error-msg" id="err-category">Please select a category.</span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="condition">Book Condition <span class="req">*</span></label>
+                    <div class="select-wrapper">
+                        <select class="field-select" id="condition">
+                            <option value="" disabled selected>Select condition</option>
+                            <option value="new">New</option>
+                            <option value="used">Used</option>
+                        </select>
+                    </div>
+                    <span class="error-msg" id="err-condition">Please select book condition.</span>
+                </div>
+            </div>
+
+            <!-- Row 4: Language | Education Level -->
+            <div class="form-row">
+                <div class="field-group">
+                    <label class="field-label" for="language">Language <span class="req">*</span></label>
+                    <div class="select-wrapper">
+                        <select class="field-select" id="language">
+                            <option value="" disabled selected>Select language</option>
+                            <option value="english">English</option>
+                            <option value="hindi">Hindi</option>
+                            <option value="gujarati">Gujarati</option>
+                            <option value="marathi">Marathi</option>
+                            <option value="tamil">Tamil</option>
+                            <option value="telugu">Telugu</option>
+                                <option value="urdu">Urdu</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <span class="error-msg" id="err-language">Please select a language.</span>
+                </div>
+
+                <!-- FIX: Education Level — disabled by default, enabled only when Academic selected -->
+                <div class="field-group">
+                    <label class="field-label" for="educationLevel">
+                        Education Level
+                        <span id="eduReq" class="req" style="display:none;">*</span>
+                        <span id="eduNote" style="font-weight:400;color:#999;font-size:11px;margin-left:3px;">(Academic only)</span>
+                    </label>
+                    <div class="select-wrapper">
+                        <select class="field-select" id="educationLevel" disabled
+                                style="opacity:0.45; cursor:not-allowed;">
+                            <option value="" disabled selected>Select category first</option>
+                            <option value="primary">Primary (1-5)</option>
+                            <option value="middle">Middle (6-8)</option>
+                            <option value="secondary">Secondary (9-10)</option>
+                            <option value="senior">Senior Secondary (11-12)</option>
+                            <option value="graduate">Graduate</option>
+                            <option value="postgraduate">Post Graduate</option>
+                            <option value="competitive">Competitive Exam</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <span class="error-msg" id="err-educationLevel">Please select education level.</span>
+                </div>
+            </div>
+
+            <!-- FIX: Description moved here — last field in Book Details, full width -->
+            <div class="form-row">
+                <div class="field-group" style="grid-column: 1 / -1;">
+                    <label class="field-label" for="description">Description <span class="req">*</span></label>
+                    <textarea class="field-textarea" id="description"
+                              placeholder="Short description of the book..."></textarea>
+                    <span class="error-msg" id="err-description">Description must be at least 10 characters.</span>
+                </div>
+            </div>
+
+            <!-- SELLER INFO -->
+            <div class="section-title" style="margin-top:6px;">Seller Information</div>
+
+            <!-- Row 6: Username | Email -->
+            <div class="form-row">
+                <div class="field-group">
+                    <label class="field-label" for="username">Username <span class="req">*</span></label>
+                    <input class="field-input" id="username" type="text"
+                           placeholder="Enter your username" />
+                    <span class="error-msg" id="err-username">Username is required.</span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="email">Email <span class="req">*</span></label>
+                    <input class="field-input" id="email" type="email"
+                           placeholder="e.g. name@gmail.com" />
+                    <span class="error-msg" id="err-email">Enter a valid email address.</span>
+                </div>
+            </div>
+
+            <!-- Row 7: Contact | Location -->
+            <div class="form-row">
+                <div class="field-group">
+                    <label class="field-label" for="contactNo">Contact No. <span class="req">*</span></label>
+                    <div class="phone-wrapper">
+                        <span class="phone-prefix">+91</span>
+                        <input class="field-input" id="contactNo" type="tel"
+                               maxlength="10" placeholder="10-digit number" />
+                    </div>
+                    <span class="error-msg" id="err-contactNo">Enter a valid 10-digit mobile number.</span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="location">Location / City <span class="req">*</span></label>
+                    <input class="field-input" id="location" type="text"
+                           placeholder="e.g. Rajkot, Gujarat" />
+                    <span class="error-msg" id="err-location">Location is required.</span>
+                </div>
+            </div>
+
+            <!-- SUBMIT -->
+            <div class="submit-area">
+                <button class="btn-submit" id="submitBtn" type="button" onclick="handleSubmit()">
+                    <i class="fa fa-paper-plane" style="margin-right:7px;"></i>Submit
+                </button>
+                <div class="success-msg" id="successMsg">
+                    <i class="fa fa-circle-check" style="margin-right:6px;"></i>
+                    Submitted Successfully!! Redirecting...
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Photo preview
+    document.getElementById('photoInput').addEventListener('change', function () {
+        var file = this.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('bookPreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // FIX: Category change — enable/disable Education Level
+    function handleCategoryChange() {
+        var cat = document.getElementById('category').value;
+        var eduEl = document.getElementById('educationLevel');
+        var eduReq = document.getElementById('eduReq');
+        var eduNote = document.getElementById('eduNote');
+
+        if (cat === 'academic') {
+            // Enable
+            eduEl.disabled = false;
+            eduEl.style.opacity = '1';
+            eduEl.style.cursor = 'pointer';
+            // Reset placeholder to normal
+            eduEl.options[0].text = 'Select level';
+            // Show required asterisk, hide note
+            eduReq.style.display = 'inline';
+            eduNote.style.display = 'none';
+        } else {
+            // Disable and reset
+            eduEl.disabled = true;
+            eduEl.style.opacity = '0.45';
+            eduEl.style.cursor = 'not-allowed';
+            eduEl.value = '';
+            eduEl.options[0].text = 'N/A - Not academic';
+            // Hide required asterisk, show note
+            eduReq.style.display = 'none';
+            eduNote.style.display = 'inline';
+            // Clear any validation state
+            eduEl.classList.remove('error', 'valid');
+            var errEl = document.getElementById('err-educationLevel');
+            if (errEl) errEl.classList.remove('visible');
+        }
+    }
+
+    // Validation functions — no arrow functions, no regex with (at) to avoid Razor conflicts
+    function isNotEmpty(v) { return v.length > 0; }
+    function isValidPrice(v) { return v !== '' && !isNaN(v) && Number(v) >= 0; }
+    function isOptionalPrice(v) { return v === '' || (!isNaN(v) && Number(v) >= 0); }
+    function isLongEnough(v) { return v.length >= 10; }
+    function isValidEmail(v) {
+        var parts = v.split('@@');
+        if (parts.length !== 2) return false;
+        var domain = parts[1].split('.');
+        return domain.length >= 2 && domain[domain.length - 1].length > 0;
+    }
+    function isValidPhone(v) {
+        if (v.length !== 10) return false;
+        for (var i = 0; i < v.length; i++) {
+            if (v[i] < '0' || v[i] > '9') return false;
+        }
+        return true;
+    }
+
+    var validationRules = {
+        'bookTitle':      { fn: isNotEmpty,      msg: 'Book title is required.' },
+        'sellingPrice':   { fn: isValidPrice,    msg: 'Enter a valid selling price.' },
+        'author':         { fn: isNotEmpty,      msg: 'Author name is required.' },
+        'description':    { fn: isLongEnough,    msg: 'Description must be at least 10 characters.' },
+        'category':       { fn: isNotEmpty,      msg: 'Please select a category.' },
+        'condition':      { fn: isNotEmpty,      msg: 'Please select book condition.' },
+        'language':       { fn: isNotEmpty,      msg: 'Please select a language.' },
+        'educationLevel': { fn: isNotEmpty,      msg: 'Please select education level.' },
+        'actualPrice':    { fn: isOptionalPrice, msg: 'Enter a valid price.' },
+        'username':       { fn: isNotEmpty,      msg: 'Username is required.' },
+        'email':          { fn: isValidEmail,    msg: 'Enter a valid email address.' },
+        'contactNo':      { fn: isValidPhone,    msg: 'Enter a valid 10-digit mobile number.' },
+        'location':       { fn: isNotEmpty,      msg: 'Location is required.' }
+    };
+
+    function validateField(id) {
+        var rule = validationRules[id];
+        if (!rule) return true;
+        var el = document.getElementById(id);
+        var errEl = document.getElementById('err-' + id);
+        if (!el) return true;
+        // Skip validation for disabled fields
+        if (el.disabled) return true;
+        var val = el.value.trim();
+        var valid = rule.fn(val);
+        if (valid) {
+            el.classList.remove('error');
+            if (val.length > 0) el.classList.add('valid');
+            else el.classList.remove('valid');
+        } else {
+            el.classList.add('error');
+            el.classList.remove('valid');
+        }
+        if (errEl) {
+            errEl.textContent = rule.msg;
+            if (!valid) errEl.classList.add('visible');
+            else errEl.classList.remove('visible');
+        }
+        return valid;
+    }
+
+    // Attach listeners
+    var ids = ['bookTitle','sellingPrice','author','description','category','condition',
+               'language','educationLevel','actualPrice','username','email','contactNo','location'];
+
+    for (var i = 0; i < ids.length; i++) {
+        (function(id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            var evt = (el.tagName === 'SELECT') ? 'change' : 'blur';
+            el.addEventListener(evt, function () { validateField(id); });
+            el.addEventListener('input', function () {
+                if (el.classList.contains('error')) validateField(id);
+            });
+        })(ids[i]);
+    }
+
+    function handleSubmit() {
+        var required = ['bookTitle','sellingPrice','author','description','category',
+                        'condition','language','username','email','contactNo','location'];
+
+        // Education Level required only if Academic selected
+        var cat = document.getElementById('category').value;
+        if (cat === 'academic') {
+            required.push('educationLevel');
+        }
+
+        var allValid = true;
+        for (var i = 0; i < required.length; i++) {
+            if (!validateField(required[i])) allValid = false;
+        }
+
+        // actualPrice optional
+        var ap = document.getElementById('actualPrice');
+        if (ap && ap.value.trim() !== '') {
+            if (!validateField('actualPrice')) allValid = false;
+        }
+
+        if (!allValid) {
+            var firstErr = document.querySelector('.field-input.error, .field-select.error, .field-textarea.error');
+            if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        var btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        var msg = document.getElementById('successMsg');
+        msg.classList.add('visible');
+        setTimeout(function () {
+            window.location.href = '/Home/Index';
+        }, 1800);
+    }
+</script>
+
+</body>
+</html>
