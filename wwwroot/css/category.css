@@ -1,0 +1,65 @@
+﻿/* Container stays inside main content */
+.category-container {
+    padding: 40px 30px;
+}
+
+/* Grid fits automatically inside .content */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+    gap: 60px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Modern Card */
+.category-card {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    background: rgba(129,56,56,0.90);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+    color: none;
+}
+
+    /* POP-UP EFFECT */
+    .category-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+    }
+
+    /* Image */
+    .category-card img {
+        width: 220px;
+        height: 220px;
+        object-fit: contain;
+    }
+
+    /* Text */
+    .category-card p {
+        margin-top: 15px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: white;
+        font-size: 16px;
+    }
+
+/* RESPONSIVE */
+@media(max-width:1200px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width:768px) {
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+}
