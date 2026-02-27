@@ -1,0 +1,122 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/book-details.css" />
+
+<div class="book-details-container">
+
+    <!-- IMPROVED BACK BUTTON -->
+    <div class="back-row">
+        <a href="/Home/Index" class="back-btn">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+    </div>
+
+    <div class="book-details">
+
+        <!-- IMAGE -->
+        <div class="book-image">
+            <img class="main-img" src="/images/book1.png" />
+
+            <!-- BUTTONS -->
+            <div class="btn-row">
+                <button class="btn-main">
+                    <i class="fa fa-shopping-cart"></i>
+                    Add to cart
+                </button>
+
+                <button class="btn-main">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                    Buy now
+                </button>
+            </div>
+        </div>
+
+        <!-- INFO -->
+        <div class="book-info">
+
+            <div class="book-title">
+                Mathematics: Textbook for Class XII, Part I
+            </div>
+
+            <div class="actual-label">Actual Price:</div>
+
+            <div>
+                <span class="price-main">₹140</span>
+                <span class="price-old">₹240</span>
+            </div>
+
+            <div class="info-row">
+                <span class="label">Availability :</span>
+                <span class="stock">In stock</span>
+            </div>
+
+            <div class="info-row">
+                <span class="label">Condition :</span> Second-Hand
+            </div>
+
+            <div class="info-row">
+                <span class="label">Author :</span> NCERT
+            </div>
+
+            <div class="info-row">
+                <span class="label">Category :</span> Academic / Education
+            </div>
+
+            <div class="info-row">
+                <span class="label">Language :</span> English
+            </div>
+
+            <div class="info-row">
+                <span class="label">Education Level :</span> Senior Secondary
+            </div>
+
+            <div class="info-row">
+                <span class="label">Description :</span>
+                A textbook for the Class 12 NCERT first part.
+            </div>
+
+            <div class="rating">
+                <span class="label">Rating:</span>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-half"></i>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MOVED UPLOADER ABOVE REVIEW -->
+    <div class="uploader-row">
+        <button class="uploader-btn">
+            <i class="fa fa-user"></i>
+            Uploader Info
+        </button>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="review-section">
+
+        <div class="review-title">Review:</div>
+
+        <div class="review-item">
+            <img src="/images/profile_image.png" class="profile-img">
+            Tanvi : The book i bought from him is as it is shown in image
+        </div>
+
+        <div class="review-item">
+            <img src="/images/profile_image.png" class="profile-img">
+            Ayushi : Not waste of money
+        </div>
+
+        <div class="review-item">
+            <img src="/images/profile_image.png" class="profile-img">
+            Mira : Condition of book is great
+        </div>
+
+    </div>
+
+</div>

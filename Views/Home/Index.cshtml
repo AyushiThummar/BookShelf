@@ -1,8 +1,117 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="book-grid">
+
+    <!-- 1 -->
+    <div class="book-card">
+
+        <img src="/images/book1.png">
+
+        <h3>Maths Textbook XII</h3>
+        <p>Education</p>
+
+        <div class="price">
+            <span class="old">₹240</span>
+            <span class="new">₹140</span>
+        </div>
+
+        <div class="card-buttons">
+
+            <!-- VIEW BUTTON LINK -->
+            <a href="/Home/BookDetails">
+                <button>View</button>
+            </a>
+
+            <!-- WISHLIST -->
+            <i class="fa fa-heart wishlist-icon"></i>
+
+        </div>
+
+    </div>
+    <!-- 2 -->
+    <div class="book-card">
+        <img src="/images/book2.png">
+        <h3>Artificial Intelligence</h3>
+        <p>Computer Science</p>
+        <div class="price"><span class="old">₹740</span><span class="new">₹550</span></div>
+        <div class="card-buttons">
+            <button>View</button>
+            <i class="fa fa-heart wishlist-icon"></i>
+        </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="book-card">
+        <img src="/images/book3.png">
+        <h3>Twisted Series</h3>
+        <p>Fiction</p>
+        <div class="price"><span class="old">₹1999</span><span class="new">₹899</span></div>
+        <div class="card-buttons">
+            <button>View</button>
+            <i class="fa fa-heart wishlist-icon"></i>
+        </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="book-card">
+        <img src="/images/book4.png">
+        <h3>Gujarati Textbook</h3>
+        <p>Education</p>
+        <div class="price"><span class="old">₹150</span><span class="new">₹80</span></div>
+        <div class="card-buttons">
+            <button>View</button>
+            <i class="fa fa-heart wishlist-icon"></i>
+        </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="book-card">
+        <img src="/images/book5.png">
+        <h3>The 7 Habbits Happy Kids</h3>
+        <p>Kids book</p>
+        <div class="price"><span class="old">₹400</span><span class="new">₹245</span></div>
+        <div class="card-buttons">
+            <button>View</button>
+            <i class="fa fa-heart wishlist-icon"></i>
+        </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="book-card">
+        <img src="/images/book6.png">
+        <h3>Bhagavad Gita</h3>
+        <p>Religious</p>
+        <div class="price"><span class="old">₹601</span><span class="new">₹485</span></div>
+        <div class="card-buttons">
+            <button>View</button>
+            <i class="fa fa-heart wishlist-icon"></i>
+        </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="book-card">
+        <img src="/images/book7.png">
+        <h3>Chanakya Neeti</h3>
+        <p>Self Groth</p>
+        <div class="price"><span class="old">₹150</span><span class="new">₹80</span></div>
+        <div class="card-buttons">
+            <button>View</button>
+            <i class="fa fa-heart wishlist-icon"></i>
+        </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="book-card">
+        <img src="/images/book8.png">
+        <h3>Oxford Dictionary</h3>
+        <p>Reference</p>
+        <div class="price"><span class="old">₹350</span><span class="new">₹200</span></div>
+        <div class="card-buttons">
+            <button>View</button>
+            <i class="fa fa-heart wishlist-icon"></i>
+        </div>
+    </div>
+
 </div>
