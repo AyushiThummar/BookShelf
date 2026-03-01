@@ -33,6 +33,11 @@ namespace BookShelf.Controllers
         {
             return View();
         }
+        public IActionResult CategoryBooks(string category)
+        {
+            ViewBag.Category = category ?? "Books";
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
