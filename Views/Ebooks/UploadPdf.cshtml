@@ -1,0 +1,280 @@
+﻿@* ============================================================
+   Views/EBooks/UploadPdf.cshtml
+   Static page — ASP.NET Core MVC
+   ============================================================ *@
+
+@{
+    Layout = null;
+    string pageTitle = "Upload PDF";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@pageTitle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/upload-pdf.css" />
+</head>
+<body>
+
+<div class="upload-pdf-page">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <a href="/Home/Index" class="btn-back" title="Go Back">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+        <h1 class="page-title">Upload PDF</h1>
+    </div>
+
+    <!-- CARD -->
+    <div class="upload-card">
+
+        <!-- DROPZONE -->
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('pdfInput').click()">
+            <div class="dropzone-icon">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <div class="dropzone-title">Choose a file or drag &amp; drop it here</div>
+            <div class="dropzone-subtitle">File must be in PDF format</div>
+            <button class="btn-browse" type="button" id="browseBtn">
+                <i class="fa fa-folder-open" style="margin-right:6px;"></i>Browse File
+            </button>
+            <input type="file" id="pdfInput" accept=".pdf,application/pdf" />
+        </div>
+
+        <!-- BOOK INFO -->
+        <div class="book-info-panel">
+            <div class="book-info-grid">
+
+                <!-- Book Title -->
+                <div class="field-group-wrap">
+                    <div class="field-row">
+                        <label class="field-row-label" for="bookTitle">Book Title</label>
+                        <input class="field-row-input" id="bookTitle" type="text" placeholder="e.g. Let Them" />
+                    </div>
+                    <div class="field-error" id="err-bookTitle">Book title is required.</div>
+                </div>
+
+                <!-- Language -->
+                <div class="field-group-wrap">
+                    <div class="field-row">
+                        <label class="field-row-label" for="language">Language</label>
+                        <div class="select-wrap">
+                            <select class="field-row-select" id="language">
+                                <option value="" disabled selected>Select</option>
+                                <option value="english">English</option>
+                                <option value="hindi">Hindi</option>
+                                <option value="gujarati">Gujarati</option>
+                                <option value="marathi">Marathi</option>
+                                <option value="tamil">Tamil</option>
+                                <option value="telugu">Telugu</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field-error" id="err-language">Please select a language.</div>
+                </div>
+
+                <!-- Author -->
+                <div class="field-group-wrap">
+                    <div class="field-row">
+                        <label class="field-row-label" for="author">Author</label>
+                        <input class="field-row-input" id="author" type="text" placeholder="e.g. Mel Robbins" />
+                    </div>
+                    <div class="field-error" id="err-author">Author name is required.</div>
+                </div>
+
+                <!-- Name -->
+                <div class="field-group-wrap">
+                    <div class="field-row">
+                        <label class="field-row-label" for="uploaderName">Your Name</label>
+                        <input class="field-row-input" id="uploaderName" type="text" placeholder="Your full name" />
+                    </div>
+                    <div class="field-error" id="err-uploaderName">Your name is required.</div>
+                </div>
+
+                <!-- Category -->
+                <div class="field-group-wrap">
+                    <div class="field-row">
+                        <label class="field-row-label" for="category">Category</label>
+                        <div class="select-wrap">
+                            <select class="field-row-select" id="category">
+                                <option value="" disabled selected>Select</option>
+                                <option value="academic">Academic</option>
+                                    <option value="kids">Kids</option>
+                                    <option value="poetry">Poetry</option>
+                                    <option value="fiction">Fiction</option>
+                                    <option value="religion">Religion</option>
+                                    <option value="motivation">Motivation</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field-error" id="err-category">Please select a category.</div>
+                </div>
+
+                <!-- Email -->
+                <div class="field-group-wrap">
+                    <div class="field-row">
+                        <label class="field-row-label" for="email">Email</label>
+                        <input class="field-row-input" id="email" type="email" placeholder="e.g. name@gmail.com" />
+                    </div>
+                    <div class="field-error" id="err-email">Enter a valid email address.</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FILE PREVIEW BAR -->
+        <div class="file-preview-bar" id="filePreviewBar">
+            <div class="file-pdf-icon"></div>
+            <div class="file-preview-info">
+                <div class="file-preview-name" id="fileName">file.pdf</div>
+                <div class="file-preview-progress">
+                    <div class="file-preview-progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            <button class="file-preview-remove" type="button" onclick="removeFile()" title="Remove file">
+                <i class="fa fa-circle-xmark"></i>
+            </button>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="submit-area">
+            <button class="btn-submit" id="submitBtn" type="button" onclick="handleSubmit()">
+                <i class="fa fa-paper-plane" style="margin-right:7px;"></i>Submit
+            </button>
+            <div class="success-msg" id="successMsg">
+                <i class="fa fa-circle-check" style="margin-right:6px;"></i>
+                Uploaded Successfully!! Redirecting...
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    var selectedFile = null;
+    var dropzone = document.getElementById('dropzone');
+
+    document.getElementById('browseBtn').addEventListener('click', function(evt) {
+        evt.stopPropagation();
+        document.getElementById('pdfInput').click();
+    });
+
+    dropzone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+    });
+    dropzone.addEventListener('dragleave', function(e) {
+        if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('dragover');
+    });
+    dropzone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) processFile(e.dataTransfer.files[0]);
+    });
+    document.getElementById('pdfInput').addEventListener('change', function() {
+        if (this.files.length > 0) processFile(this.files[0]);
+    });
+
+    function processFile(file) {
+        var name = file.name;
+        var isPdf = (file.type === 'application/pdf') || (name.substring(name.length - 4).toLowerCase() === '.pdf');
+        if (!isPdf) {
+            dropzone.classList.add('shake');
+            setTimeout(function() { dropzone.classList.remove('shake'); }, 400);
+            return;
+        }
+        selectedFile = file;
+        document.getElementById('fileName').textContent = name;
+        document.getElementById('filePreviewBar').classList.add('visible');
+        setTimeout(function() { document.getElementById('progressFill').style.width = '100%'; }, 80);
+    }
+
+    function removeFile() {
+        selectedFile = null;
+        document.getElementById('pdfInput').value = '';
+        document.getElementById('filePreviewBar').classList.remove('visible');
+        document.getElementById('progressFill').style.width = '0%';
+    }
+
+    function isNotEmpty(v) { return v.length > 0; }
+
+    // FIX: was '@@' (Razor escape) causing JS error, and variable name mismatch (atPos vs at)
+    function isValidEmail(v) {
+            var atPos = v.indexOf('@@');
+        if (atPos < 1) return false;
+        var domain = v.substring(atPos + 1);
+        var dotPos = domain.lastIndexOf('.');
+        return dotPos > 0 && dotPos < domain.length - 1;
+    }
+
+    var rules = {
+        bookTitle:    { fn: isNotEmpty },
+        author:       { fn: isNotEmpty },
+        uploaderName: { fn: isNotEmpty },
+        language:     { fn: isNotEmpty },
+        category:     { fn: isNotEmpty },
+        email:        { fn: isValidEmail }
+    };
+
+    function validateField(id) {
+        var rule = rules[id];
+        if (!rule) return true;
+        var el  = document.getElementById(id);
+        var err = document.getElementById('err-' + id);
+        if (!el) return true;
+        var val   = el.value.trim();
+        var valid = rule.fn(val);
+        el.classList.toggle('error', !valid);
+        el.classList.toggle('valid', valid && val.length > 0);
+        if (err) { valid ? err.classList.remove('visible') : err.classList.add('visible'); }
+        return valid;
+    }
+
+    var fieldIds = ['bookTitle', 'author', 'uploaderName', 'language', 'category', 'email'];
+
+    for (var i = 0; i < fieldIds.length; i++) {
+        (function(id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            var evt = (el.tagName === 'SELECT') ? 'change' : 'blur';
+            el.addEventListener(evt, function() { validateField(id); });
+            el.addEventListener('input', function() { if (el.classList.contains('error')) validateField(id); });
+        })(fieldIds[i]);
+    }
+
+    function handleSubmit() {
+        var allValid = true;
+        for (var j = 0; j < fieldIds.length; j++) {
+            if (!validateField(fieldIds[j])) allValid = false;
+        }
+        if (!selectedFile) {
+            allValid = false;
+            dropzone.classList.add('shake');
+            setTimeout(function() { dropzone.classList.remove('shake'); }, 400);
+        }
+        if (!allValid) {
+            var first = document.querySelector('.field-row-input.error, .field-row-select.error');
+            if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        // Disable button + show success message
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('successMsg').classList.add('visible');
+
+        // Redirect to Home/Index after 2 seconds
+        setTimeout(function() {
+            window.location.href = '/Home/Index';
+        }, 2000);
+    }
+</script>
+
+</body>
+</html>

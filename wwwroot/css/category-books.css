@@ -1,0 +1,65 @@
+﻿/* ============================================
+   category-books.css
+   Place in: wwwroot/css/category-books.css
+   
+   NOTE: .book-card, .price, .old, .new,
+   .card-buttons, .wishlist-icon, .book-grid
+   are already defined in your main site CSS.
+   This file only adds page-level extras.
+   ============================================ */
+
+/* ── PAGE WRAPPER ── */
+.catbooks-page {
+    padding: 0;
+}
+
+/* ── BACK ARROW HEADER ── */
+.catbooks-header {
+    padding: 18px 20px 4px;
+}
+
+/* Back arrow — rounded square, maroon border, fills on hover */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 2px solid #803434;
+    background: #fff;
+    color: #803434;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .btn-back:hover {
+        background: #803434;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(128, 52, 52, 0.28);
+    }
+
+/* ── BOOK TITLE + CATEGORY INSIDE CARD ── */
+.book-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+}
+
+.book-card-category {
+    font-size: 12px;
+    color: #803434;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 2px;
+}
