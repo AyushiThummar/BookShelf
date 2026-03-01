@@ -1,0 +1,184 @@
+﻿body {
+}
+/* ===== PAGE WRAPPER ===== */
+.adminbooks-page {
+    min-height: 100vh;
+    background: #f5f5f5;
+    padding: 34px 0px;
+    box-sizing: border-box;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #7b3535;
+    border-radius: 8px;
+    color: #7b3535;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    margin-left: 30px;
+}
+
+    .back-btn:hover {
+        background: #7b3535;
+        color: #fff;
+    }
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    padding: 0 32px;
+}
+
+.page-title {
+    font-size: 46px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 auto;
+    letter-spacing: 0.5px;
+}
+
+/* ===== BOOKS CARD ===== */
+.adminbooks-card {
+    background: #c28880;
+    border-radius: 16px;
+    padding: 20px 24px 28px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.13);
+    margin: 0 40px;
+    overflow-x: auto;
+}
+
+/* ===== SEARCH BAR ===== */
+.search-bar-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 18px;
+    margin-top: 10px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 24px;
+    padding: 9px 18px;
+    gap: 10px;
+    width: 350px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .search-bar input {
+        border: none;
+        outline: none;
+        font-size: 14px;
+        color: #444;
+        background: transparent;
+        flex: 1;
+        font-family: inherit;
+    }
+
+        .search-bar input::placeholder {
+            color: #aaa;
+        }
+
+    .search-bar i {
+        color: #7b3535;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+/* ===== TABLE WRAPPER ===== */
+.adminbooks-table {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 1200px;
+}
+
+/* ===== ROW — 14 columns ===== */
+.table-row {
+    display: grid;
+    grid-template-columns: 50px /* Sr no.        */
+    55px /* Book i.       */
+    100px /* Book Title    */
+    80px /* Author        */
+    90px /* Category      */
+    85px /* Language      */
+    85px /* Edu. Level    */
+    90px /* Actual Price  */
+    90px /* Selling Price */
+    110px /* Description   */
+    85px /* Username      */
+    90px /* Email         */
+    100px /* Contact No.   */
+    1fr; /* DateTime      */
+    align-items: center;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #2c2c2c;
+    border-radius: 8px;
+}
+
+/* ===== HEADER ===== */
+.table-header {
+    background: transparent;
+    font-weight: 700;
+    color: #1a1a1a;
+    font-size: 13px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0;
+    padding-bottom: 14px;
+    margin-bottom: 4px;
+}
+
+/* ===== DATA ROWS ===== */
+.table-row:not(.table-header) {
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+    .table-row:not(.table-header):hover {
+        background: #fff5f5;
+    }
+
+/* ===== AVATAR ICON ===== */
+.avatar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #c9908a;
+    color: #fff;
+}
+
+    .avatar-icon i {
+        font-size: 20px;
+    }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .adminbooks-page {
+        padding: 16px;
+    }
+
+    .adminbooks-card {
+        margin: 0 10px;
+    }
+
+    .page-title {
+        font-size: 28px;
+    }
+
+    .search-bar {
+        width: 180px;
+    }
+}

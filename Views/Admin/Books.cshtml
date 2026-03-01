@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Books";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/admin-books.css" />
+}
+
+<div class="adminbooks-page">
+
+    <!-- BACK BUTTON + TITLE -->
+    <div class="page-header">
+        <a href="/Admin/Dashboard" class="back-btn">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+        <h2 class="page-title">Books</h2>
+    </div>
+
+    <!-- BOOKS CARD -->
+    <div class="adminbooks-card">
+
+        <!-- SEARCH BAR -->
+        <div class="search-bar-wrapper">
+            <div class="search-bar">
+                <input type="text" placeholder="Search here" id="bookSearch" />
+                <i class="fa fa-magnifying-glass"></i>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="adminbooks-table">
+
+            <!-- HEADER -->
+            <div class="table-row table-header">
+                <div>Sr no.</div>
+                <div>Book i.</div>
+                <div>Book Title</div>
+                <div>Author</div>
+                <div>Category</div>
+                <div>Language</div>
+                <div>Edu. Level</div>
+                <div>Actual Price</div>
+                <div>Selling Price</div>
+                <div>Description</div>
+                <div>Username</div>
+                <div>Email</div>
+                <div>Contact No.</div>
+                <div>DateTime</div>
+            </div>
+
+            @for (int i = 1; i <= 12; i++)
+            {
+                <div class="table-row">
+                    <div>@i</div>
+                    <div>
+                        <span class="avatar-icon">
+                            <i class="fa fa-circle-user"></i>
+                        </span>
+                    </div>
+                    <div>Maths</div>
+                    <div>Jack</div>
+                    <div>Education</div>
+                    <div>English</div>
+                    <div>Secondary</div>
+                    <div>450</div>
+                    <div>250</div>
+                    <div>A textbook</div>
+                    <div>kaira</div>
+                    <div>abc</div>
+                    <div>123456789</div>
+                    <div>2026-02-15 14:30:25</div>
+                </div>
+            }
+
+        </div>
+        <!-- end adminbooks-table -->
+
+    </div>
+    <!-- end adminbooks-card -->
+
+</div>
+
+@section Scripts{
+<script>
+    document.getElementById('bookSearch').addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        document.querySelectorAll('.table-row:not(.table-header)').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(query) ? '' : 'none';
+        });
+    });
+</script>
+}
