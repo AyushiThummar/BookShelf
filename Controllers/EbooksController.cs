@@ -11,18 +11,9 @@ public class EbooksController : Controller
     {
         return View();
     }
-    public IActionResult Download(string fileName)
+
+    public IActionResult UploadPdf()
     {
-        if (string.IsNullOrEmpty(fileName))
-            return NotFound();
-
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
-
-        if (!System.IO.File.Exists(path))
-            return NotFound();
-
-        var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-
-        return File(stream, "application/pdf", fileName);
+        return View();
     }
 }

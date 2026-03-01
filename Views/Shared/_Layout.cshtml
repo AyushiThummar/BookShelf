@@ -46,8 +46,65 @@
 
                 @if (isLoggedIn)
                 {
-                    <i class="fa fa-bell header-icon"></i>
-                    <i class="fa fa-user header-icon"></i>
+                    <!-- ===== LOGGED IN MENU ===== -->
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-cart-shopping"></i>
+                            <span>Cart</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-heart"></i>
+                            <span>Wishlist</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-box"></i>
+                            <span>My Orders</span>
+                        </a>
+                    </li>
+
+                    <li class="@isActive("EBooks", "UploadPdf")">
+                        <a asp-controller="EBooks" asp-action="UploadPdf">
+                            <i class="fa fa-upload"></i>
+                            <span>Upload PDF</span>
+                        </a>
+                    </li>
+
+                    <li class="@isActive("Books", "UploadBook")">
+                        <a asp-controller="Books" asp-action="UploadBook">
+                            <i class="fa fa-book-open"></i>
+                            <span>Upload Book</span>
+                        </a>
+                    </li>
+
+                    <!-- 🔥 FIXED HERE -->
+                    <li class="@isActive("Ebooks", "Index")">
+                        <a asp-controller="Ebooks" asp-action="Index">
+                            <!-- FIX: was href="Ebooks" -->
+                            <i class="fa fa-book"></i>
+                            <span>E-Books</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-info-circle"></i>
+                            <span>About</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
                 }
                 else
                 {
@@ -58,14 +115,19 @@
         </div>
     }
 
-    <!-- ================= MAIN ================= -->
-    <div class="main-container">
+                    <li class="@isActive("EBooks", "UploadPdf")">
+                        <a asp-controller="EBooks" asp-action="UploadPdf">
+                            <i class="fa fa-upload"></i>
+                            <span>Upload PDF</span>
+                        </a>
+                    </li>
 
-        @if (!isAdminPage)
-        {
-            <!-- ================= SIDEBAR ================= -->
-            <div class="sidebar">
-                <ul>
+                    <li class="@isActive("Books", "UploadBook")">
+                        <a asp-controller="Books" asp-action="UploadBook">
+                            <i class="fa fa-book-open"></i>
+                            <span>Upload Book</span>
+                        </a>
+                    </li>
 
                     <li class="@isActive("Home", "Index")">
                         <a asp-controller="Home" asp-action="Index">

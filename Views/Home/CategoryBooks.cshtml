@@ -1,0 +1,325 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var category = ViewBag.Category as string ?? "Books";
+}
+<link rel="stylesheet" href="~/css/category-books.css" />
+
+<div class="catbooks-page">
+
+    <!-- Back arrow -->
+    <div class="catbooks-header">
+        <a href="/Home/Category" class="btn-back" title="Back to Categories">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+    </div>
+
+    <!-- Books Grid -->
+    <div class="book-grid">
+
+        @* ── EDUCATION books ── *@
+        @if (category == "Education")
+        {
+            <div class="book-card">
+                <img src="~/images/book1.png" alt="Maths Textbook XII"
+                     onerror="this.src='https://placehold.co/300x260/c9a5a5/fff?text=Maths+XII'" />
+                <div class="book-card-title">Maths Textbook - XII</div>
+                <div class="book-card-category">Education</div>
+                <div class="price">
+                    <span class="old">&#8377;240</span>
+                    <span class="new">&#8377;140</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="window.location.href='/Home/BookDetails?id=1'">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book2.png" alt="Artificial Intelligence"
+                     onerror="this.src='https://placehold.co/300x260/2d4a2d/fff?text=AI+Book'" />
+                <div class="book-card-title">Artificial Intelligence</div>
+                <div class="book-card-category">Computer Science / AI</div>
+                <div class="price">
+                    <span class="old">&#8377;240</span>
+                    <span class="new">&#8377;550</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book4.png" alt="Gujarati Textbook X"
+                     onerror="this.src='https://placehold.co/300x260/4a3a1a/fff?text=Gujarati'" />
+                <div class="book-card-title">Gujrati Textbook - X</div>
+                <div class="book-card-category">Education</div>
+                <div class="price">
+                    <span class="old">&#8377;180</span>
+                    <span class="new">&#8377;80</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book8.png" alt="Oxford Dictionary"
+                     onerror="this.src='https://placehold.co/300x260/1a2a4a/fff?text=Oxford'" />
+                <div class="book-card-title">Oxford English Dictionary Reference</div>
+                <div class="book-card-category">Education</div>
+                <div class="price">
+                    <span class="old">&#8377;300</span>
+                    <span class="new">&#8377;200</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+        }
+
+        @* ── KIDS books ── *@
+        @if (category == "Kids")
+        {
+            <div class="book-card">
+                <img src="~/images/book5.png" alt="7 Habits Happy Kids" />
+                <div class="book-card-title">The 7 Habits Happy Kids</div>
+                <div class="book-card-category">Kids book</div>
+                <div class="price">
+                    <span class="old">&#8377;300</span>
+                    <span class="new">&#8377;245</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book9.png" alt="Journey to the Stars" />
+                <div class="book-card-title">Journey to the Stars</div>
+                <div class="book-card-category">Kids book</div>
+                <div class="price">
+                    <span class="old">&#8377;300</span>
+                    <span class="new">&#8377;245</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book10.png" alt="Drawing Books for Kids" />
+                <div class="book-card-title">Drawing Books for Kids</div>
+                <div class="book-card-category">Kids book</div>
+                <div class="price">
+                    <span class="old">&#8377;500</span>
+                    <span class="new">&#8377;300</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+        }
+
+        @* ── POETRY books ── *@
+        @if (category == "Poetry")
+        {
+            <div class="book-card">
+                <img src="~/images/book11.png" alt="Warmth" />
+                <div class="book-card-title">Warmth</div>
+                <div class="book-card-category">Poetry</div>
+                <div class="price">
+                    <span class="old">&#8377;200</span>
+                    <span class="new">&#8377;150</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book12.png" alt="Dyingful" />
+                <div class="book-card-title">Dyingful</div>
+                <div class="book-card-category">Poetry</div>
+                <div class="price">
+                    <span class="old">&#8377;950</span>
+                    <span class="new">&#8377;320</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book13.png" alt="In the Silence You Left Behind" />
+                <div class="book-card-title">In the Silence You Left Behind</div>
+                <div class="book-card-category">Poetry</div>
+                <div class="price">
+                    <span class="old">&#8377;950</span>
+                    <span class="new">&#8377;300</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+        }
+
+        @* ── FICTION books ── *@
+        @if (category == "Fiction")
+        {
+            <div class="book-card">
+                <img src="~/images/book3.png" alt="Twisted Series" />
+                <div class="book-card-title">Twisted Series</div>
+                <div class="book-card-category">Fiction</div>
+                <div class="price">
+                    <span class="old">&#8377;1000</span>
+                    <span class="new">&#8377;899</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book14.png" alt="Verity" />
+                <div class="book-card-title">Verity</div>
+                <div class="book-card-category">Fiction</div>
+                <div class="price">
+                    <span class="old">&#8377;400</span>
+                    <span class="new">&#8377;399</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book15.png" alt="The Time Machine" />
+                <div class="book-card-title">The Time Machine</div>
+                <div class="book-card-category">Fiction</div>
+                <div class="price">
+                    <span class="old">&#8377;140</span>
+                    <span class="new">&#8377;129</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+        }
+
+        @* ── RELIGION books ── *@
+        @if (category == "Religion")
+        {
+            <div class="book-card">
+                <img src="~/images/book6.png" alt="Bhagavad Gita" />
+                <div class="book-card-title">Bhagavad Geeta</div>
+                <div class="book-card-category">Religious</div>
+                <div class="price">
+                    <span class="old">&#8377;601</span>
+                    <span class="new">&#8377;485</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book16.png" alt="Mahabharat" />
+                <div class="book-card-title">Mahabharat</div>
+                <div class="book-card-category">Religious</div>
+                <div class="price">
+                    <span class="old">&#8377;650</span>
+                    <span class="new">&#8377;500</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book17.png" alt="Quran" />
+                <div class="book-card-title">Quran</div>
+                <div class="book-card-category">Religious</div>
+                <div class="price">
+                    <span class="old">&#8377;450</span>
+                    <span class="new">&#8377;400</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+        }
+
+        @* ── MOTIVATION books ── *@
+        @if (category == "Motivation")
+        {
+            <div class="book-card">
+                <img src="~/images/book7.png" alt="Chanakya Neeti" />
+                <div class="book-card-title">Chanakya Neeti</div>
+                <div class="book-card-category">Self Growth</div>
+                <div class="price">
+                    <span class="old">&#8377;150</span>
+                    <span class="new">&#8377;80</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book18.png" alt="Atomic Habits" />
+                <div class="book-card-title">Atomic Habits</div>
+                <div class="book-card-category">Self Growth</div>
+                <div class="price">
+                    <span class="old">&#8377;550</span>
+                    <span class="new">&#8377;500</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="~/images/book19.png" alt="You Can Win" />
+                <div class="book-card-title">You Can Win</div>
+                <div class="book-card-category">Self Growth</div>
+                <div class="price">
+                    <span class="old">&#8377;450</span>
+                    <span class="new">&#8377;350</span>
+                </div>
+                <div class="card-buttons">
+                    <button onclick="">View</button>
+                    <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWish(this)"></i>
+                </div>
+            </div>
+        }
+
+    </div>
+    @* end book-grid *@
+
+</div>
+
+<script>
+    // Toggle wishlist heart fill/unfill
+    function toggleWish(icon) {
+        icon.classList.toggle('fa-regular');
+        icon.classList.toggle('fa-solid');
+        icon.style.color = icon.classList.contains('fa-solid') ? '#c0392b' : '#823838';
+    }
+</script>
