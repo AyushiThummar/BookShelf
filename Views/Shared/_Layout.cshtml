@@ -4,9 +4,48 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BookShelf</title>
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Default Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Project Auto Generated CSS -->
     <link rel="stylesheet" href="~/BookShelf.styles.css" asp-append-version="true" />
+
+    <!-- 🔹 Your Custom Auth CSS -->
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+
+    <!-- 🔹 Your Custom Register CSS -->
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+
+    <!-- 🔹 Your Custom Forgot Password CSS -->
+    <link rel="stylesheet" href="~/css/forgotpassword.css" asp-append-version="true" />
+
+    <!-- 🔹 Your Custom Notification CSS -->
+    <link rel="stylesheet" href="~/css/notification.css" asp-append-version="true" />
+
+    <!-- 🔹 Your Custom User Profile CSS -->
+    <link rel="stylesheet" href="~/css/userprofile.css" asp-append-version="true" />
+
+    <!-- 🔹 Your Custom Edit User Profile CSS -->
+    <link rel="stylesheet" href="~/css/EditUserProfile.css" asp-append-version="true" />
+
+    <!-- 🔹 Your Custom About Us CSS -->
+    <link rel="stylesheet" href="~/css/aboutus.css" asp-append-version="true" />
+
+    <!-- 🔹 Your Custom Admin Profile CSS -->
+    <link rel="stylesheet" href="~/css/AdminProfile.css" asp-append-version="true" />
+
+     <!-- 🔹 Your Custom Admin Profile1 CSS -->
+    <link rel="stylesheet" href="~/css/AdminProfile.css" asp-append-version="true" />
+
+    <!-- 🔹 Your Custom Admin About Us CSS -->
+    <link rel="stylesheet" href="~/css/admin-aboutus.css" asp-append-version="true" />
+
+    <!-- 🔹 Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -30,17 +69,17 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <main role="main" class="m-0 p-0">
+        @RenderBody()
+    </main>
+
+    @* <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - BookShelf - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
