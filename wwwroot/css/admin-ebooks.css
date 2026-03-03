@@ -1,5 +1,5 @@
 ﻿/* ===== PAGE WRAPPER ===== */
-.users-page {
+.adminebooks-page {
     min-height: 100vh;
     background: #f5f5f5;
     padding: 34px 0px;
@@ -59,8 +59,8 @@
     font-family: 'Inter', sans-serif;
 }
 
-/* ===== USERS CARD ===== */
-.users-card {
+/* ===== EBOOKS CARD ===== */
+.adminebooks-card {
     background: #c28880;
     border-radius: 16px;
     padding: 20px 24px 28px;
@@ -107,26 +107,32 @@
         cursor: pointer;
     }
 
-/* ===== TABLE ===== */
-.users-table {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+/* ===== TABLE WRAPPER ===== */
+.adminebooks-table-wrapper {
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
 }
 
-/* ===== ROW — 7 columns ===== */
+/* ===== TABLE ===== */
+.adminebooks-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+}
+
+/* ===== ROW — 8 columns ===== */
 .table-row {
     display: grid;
-    grid-template-columns: 0.4fr /* Sr No.   */
-    0.4fr /* Picture  */
-    1fr /* Name     */
-    1fr /* Username */
-    1fr /* Number   */
-    0.8fr /* Status   */
-    1.2fr; /* DateTime */
+    grid-template-columns: 0.4fr /* Sr No.     */
+    1.2fr /* Book Title */
+    0.9fr /* Author     */
+    0.9fr /* Category   */
+    0.8fr /* Language   */
+    0.9fr /* Username   */
+    1.1fr /* Email      */
+    1fr; /* DateTime   */
     align-items: center;
     padding: 12px 14px;
     font-size: 13px;
@@ -187,41 +193,6 @@
         transition: all 0.2s ease;
     }
 
-/* ===== AVATAR ICON ===== */
-.avatar-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: #c9908a;
-    color: #fff;
-}
-
-    .avatar-icon i {
-        font-size: 20px;
-    }
-
-/* ===== STATUS BADGES ===== */
-.status {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-    .status.active {
-        background: #dff0df;
-        color: #2d6a2d;
-    }
-
-    .status.inactive {
-        background: #fde0e0;
-        color: #8b2222;
-    }
-
 /* ===== DATETIME CELL ===== */
 .datetime-cell {
     display: flex;
@@ -241,13 +212,22 @@
     color: #888;
 }
 
+/* ===== EMAIL CELL ===== */
+.email-cell {
+    font-size: 12px;
+    color: #444;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-    .users-page {
+    .adminebooks-page {
         padding: 16px;
     }
 
-    .users-card {
+    .adminebooks-card {
         margin: 0 10px;
         padding: 14px 10px 20px;
     }
