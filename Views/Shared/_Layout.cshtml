@@ -14,14 +14,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>BookShelf</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookShelf</title>
 
-    <link rel="stylesheet" href="~/css/site.css" />
-    @RenderSection("Styles", required: false)
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Mira extra CSS -->
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/forgotpassword.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/notification.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/userprofile.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/EditUserProfile.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/aboutus.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AdminProfile.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-aboutus.css" asp-append-version="true" />
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    @RenderSection("Styles", required: false)
 </head>
 
 <body>
@@ -37,10 +50,7 @@
 
             <div class="header-right">
                 <div class="search-box">
-                    <div class="search-box">
-                        <input type="text" id="globalBookSearch" placeholder="Search books..." />
-                        <i class="fa fa-search"></i>
-                    </div>
+                    <input type="text" id="globalBookSearch" placeholder="Search books..." />
                     <i class="fa fa-search"></i>
                 </div>
 
@@ -170,9 +180,7 @@
         <div class="content">
             @RenderBody()
         </div>
-
-    </div>
-
+      </div> 
     @await RenderSectionAsync("Scripts", required: false)
     <script>
         document.addEventListener("DOMContentLoaded", function () {
