@@ -1,0 +1,541 @@
+﻿/* ============================================
+   upload-pdf.css  —  wwwroot/css/upload-pdf.css
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #ffff;
+    min-height: 100vh;
+}
+
+/* ── PAGE WRAPPER ── */
+.upload-pdf-page {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 28px 80px;
+}
+
+/* ── HEADER ── */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 32px;
+}
+
+    .page-header .btn-back {
+        position: absolute;
+        left: 0;
+    }
+
+/* ── BACK ARROW BUTTON ── */
+.btn-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px; /* exact size */
+    height: 42px; /* exact size */
+
+    border-radius: 10px; /* exact radius */
+    border: 2px solid #803434;
+    background: #ffffff;
+    color: #803434;
+    font-size: 18px; /* exact icon size */
+    text-decoration: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.25s ease, transform 0.15s ease;
+}
+
+    .btn-back:hover {
+        background: #803434;
+        color: #ffffff;
+        box-shadow: 0 6px 18px rgba(128, 52, 52, 0.28);
+        transform: translateY(-2px);
+    }
+
+    .btn-back:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 8px rgba(128, 52, 52, 0.2);
+    }
+    .page-title {
+    font-size: clamp(26px, 4.5vw, 52px);
+    font-weight: 700;
+    color: #264075;
+    text-align: center;
+}
+
+/* ── CARD ── */
+.upload-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1.5px solid #d4a0a0;
+    padding: 28px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 8px 40px rgba(122,46,46,0.10);
+}
+
+/* ── DROPZONE ── */
+.dropzone {
+    background: #fdf5f5;
+    border: 2px dashed #c09090;
+    border-radius: 12px;
+    padding: 38px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    transition: background .2s, border-color .2s, transform .18s;
+}
+
+    .dropzone:hover, .dropzone.dragover {
+        background: #fce8e8;
+        border-color: #7a2e2e;
+        transform: scale(1.002);
+    }
+
+.dropzone-icon {
+    font-size: 48px;
+    color: #7a2e2e;
+    margin-bottom: 2px;
+    transition: transform .25s;
+}
+
+.dropzone:hover .dropzone-icon {
+    transform: translateY(-5px);
+}
+
+.dropzone-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #4a1a1a;
+}
+
+.dropzone-subtitle {
+    font-size: 12.5px;
+    color: #9a6060;
+    margin-bottom: 2px;
+}
+
+.btn-browse {
+    margin-top: 8px;
+    padding: 10px 34px;
+    background: #7a2e2e;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+}
+
+    .btn-browse:hover {
+        background: #561f1f;
+        transform: translateY(-1px);
+    }
+
+    .btn-browse:active {
+        transform: translateY(0);
+    }
+
+.dropzone.shake {
+    animation: shake .35s ease;
+    border-color: #c0392b;
+}
+
+@keyframes shake {
+    0%,100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-7px);
+    }
+
+    40% {
+        transform: translateX(7px);
+    }
+
+    60% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+#pdfInput {
+    display: none;
+}
+
+/* ── BOOK INFO PANEL ── */
+.book-info-panel {
+    background: #fdf5f5;
+    border: 1.5px solid #000000;
+    border-radius: 12px;
+    padding: 24px 24px 8px;
+}
+
+/* ── THE FIX: use auto rows, NOT fixed row-gap ── */
+/* Each column is independent — fields stack naturally */
+.book-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 36px;
+    /* NO row-gap — spacing done by field-group-wrap margin */
+}
+
+/* ── FIELD GROUP — self-contained block ── */
+/* margin-bottom creates the gap between rows */
+.field-group-wrap {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    /* min-height ensures consistent row height even without error */
+    min-height: 50px;
+}
+
+/* Label */
+.field-row-label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #6b2828;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 7px;
+}
+
+/* .field-row is now just a container — column direction */
+.field-row {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── INPUT ── */
+.field-row-input {
+    width: 100%;
+    padding: 11px 15px;
+    background: #fff;
+    border: 1.5px solid #d4a8a8;
+    border-radius: 9px;
+    color: #2c0e0e;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+    .field-row-input::placeholder {
+        color: #c4a0a0;
+        font-style: italic;
+        font-size: 13px;
+    }
+
+    .field-row-input:focus {
+        border-color: #7a2e2e;
+        box-shadow: 0 0 0 3px rgba(122,46,46,0.09);
+    }
+
+    .field-row-input.valid {
+        border-color: #d4a8a8;
+        box-shadow: none;
+    }
+
+    .field-row-input.error {
+        border-color: #c0392b;
+        background: #fff9f9;
+        box-shadow: 0 0 0 3px rgba(192,57,43,0.07);
+    }
+
+/* ── SELECT WRAP ── */
+.select-wrap {
+    position: relative;
+    width: 100%;
+}
+
+    .select-wrap::after {
+        content: '\f107';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7a2e2e;
+        pointer-events: none;
+        font-size: 12px;
+    }
+
+/* ── SELECT ── */
+.field-row-select {
+    width: 100%;
+    padding: 11px 38px 11px 15px;
+    background: #fff;
+    border: 1.5px solid #d4a8a8;
+    border-radius: 9px;
+    color: #2c0e0e;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+    .field-row-select:focus {
+        border-color: #7a2e2e;
+        box-shadow: 0 0 0 3px rgba(122,46,46,0.09);
+    }
+
+    .field-row-select.valid {
+        border-color: #d4a8a8;
+        box-shadow: none;
+    }
+
+    .field-row-select.error {
+        border-color: #c0392b;
+        background: #fff9f9;
+        box-shadow: 0 0 0 3px rgba(192,57,43,0.07);
+    }
+
+    .field-row-select option {
+        background: #fff;
+        color: #2c0e0e;
+    }
+
+/* ── ERROR — lives INSIDE field-group-wrap, never bleeds into next ── */
+.field-error {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #c0392b;
+    margin-top: 5px;
+    padding-left: 2px;
+    /* hidden but takes NO space when hidden (display:none) */
+    display: none;
+    animation: fadeIn .18s ease;
+}
+
+    .field-error.visible {
+        display: block;
+    }
+
+/* ── SUBMIT ── */
+.submit-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-submit {
+    padding: 13px 60px;
+    background: #6e2828;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+    min-width: 190px;
+    transition: background .2s, box-shadow .2s, transform .15s;
+}
+
+    .btn-submit:hover {
+        background: #521e1e;
+        box-shadow: 0 6px 22px rgba(110,40,40,0.28);
+        transform: translateY(-1px);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+        opacity: .6;
+        cursor: default;
+        transform: none;
+    }
+
+/* ── FILE PREVIEW BAR ── */
+.file-preview-bar {
+    background: #fdf5f5;
+    border: 1.5px solid #e0c0c0;
+    border-radius: 10px;
+    padding: 13px 16px;
+    display: none;
+    align-items: center;
+    gap: 14px;
+    animation: fadeIn .3s ease;
+}
+
+    .file-preview-bar.visible {
+        display: flex;
+    }
+
+.file-pdf-icon {
+    width: 36px;
+    height: 44px;
+    background: #7a2e2e;
+    border-radius: 5px;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .file-pdf-icon::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-style: solid;
+        border-width: 0 9px 9px 0;
+        border-color: transparent rgba(255,255,255,.22) transparent transparent;
+    }
+
+    .file-pdf-icon::after {
+        content: 'PDF';
+        font-size: 8px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: .5px;
+        margin-top: 3px;
+    }
+
+.file-preview-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.file-preview-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #4a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 7px;
+}
+
+.file-preview-progress {
+    height: 5px;
+    background: rgba(122,46,46,.12);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.file-preview-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #7a2e2e, #c07070);
+    border-radius: 10px;
+    transition: width .75s cubic-bezier(.4,0,.2,1);
+}
+
+.file-preview-remove {
+    background: none;
+    border: none;
+    color: #7a2e2e;
+    font-size: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 4px;
+    border-radius: 50%;
+    line-height: 1;
+    transition: background .18s, color .18s, transform .15s;
+}
+
+    .file-preview-remove:hover {
+        background: rgba(122,46,46,.10);
+        color: #521e1e;
+        transform: scale(1.15);
+    }
+
+/* ── SUCCESS ── */
+.success-msg {
+    color: #27ae60;
+    font-size: 15px;
+    font-weight: 600;
+    display: none;
+    text-align: center;
+    padding: 11px 24px;
+    background: #f0fdf4;
+    border-radius: 8px;
+    border: 1px solid rgba(39,174,96,.25);
+    animation: fadeIn .4s ease;
+}
+
+    .success-msg.visible {
+        display: block;
+    }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 620px) {
+    .book-info-grid {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+    }
+
+    .field-group-wrap {
+        min-height: unset;
+        margin-bottom: 16px;
+    }
+
+    .upload-pdf-page {
+        padding: 20px 14px 50px;
+    }
+
+    .page-title {
+        font-size: 24px;
+    }
+
+    .book-info-panel {
+        padding: 18px 14px 6px;
+    }
+}
+
+@media (max-width: 380px) {
+    .page-title {
+        font-size: 20px;
+    }
+}

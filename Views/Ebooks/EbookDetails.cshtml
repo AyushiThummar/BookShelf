@@ -1,0 +1,356 @@
+﻿@* ============================================================
+   Views/EBooks/EbookDetails.cshtml
+   Static page — ASP.NET Core MVC
+   ============================================================ *@
+
+@{
+    ViewData["Title"] = "E-Book Details";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Patrick+Hand&display=swap"
+          rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/ebook-details.css" />
+</head>
+<body>
+
+    <div class="main-container">
+        <main class="content">
+
+            <div style="display:flex; align-items:center; justify-content:center; position:relative; margin-bottom:16px;">
+                <a href="/EBooks/index" class="btn-back" title="Go Back">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+            </div>
+
+            <div class="action-bar">
+                <a asp-controller="Ebooks"
+                   asp-action="Download"
+                   asp-route-fileName="let-them.pdf"
+                   class="btn-download-main">
+                    <i class="fa fa-download"></i> Download
+                </a>
+
+                <a href="#" class="action-icon-btn">
+                    <i class="fa-regular fa-bookmark"></i>
+                </a>
+
+                <a href="#" class="action-icon-btn">
+                    <i class="fa-regular fa-thumbs-up"></i>
+                    <span>1.8k</span>
+                </a>
+
+                <a href="#" class="action-icon-btn">
+                    <i class="fa-regular fa-thumbs-down"></i>
+                    <span>5</span>
+                </a>
+
+                <div class="action-search-box">
+                    <input type="text" id="wordSearch" placeholder="Search word here" />
+                    <i class="fa fa-search search-icon" id="searchBtn"
+                       style="cursor:pointer; pointer-events:all;"></i>
+                </div>
+
+                <!-- Search result info: count + prev/next/clear -->
+                <div id="searchInfo"
+                     style="color:#803434; font-size:13px; display:none; align-items:center; gap:4px; white-space:nowrap;">
+                    <span id="searchCount">0</span> result(s)
+                    <button onclick="jumpMatch(-1)"
+                            style="background:none;border:none;color:#803434;cursor:pointer;font-size:16px;padding:0 3px;"
+                            title="Previous">
+                        &#8679;
+                    </button>
+                    <button onclick="jumpMatch(1)"
+                            style="background:none;border:none;color:#803434;cursor:pointer;font-size:16px;padding:0 3px;"
+                            title="Next">
+                        &#8681;
+                    </button>
+                    <button onclick="clearSearch()"
+                            style="background:none;border:none;color:#803434;cursor:pointer;font-size:13px;padding:0 3px;"
+                            title="Clear">
+                        &times;
+                    </button>
+                </div>
+            </div>
+
+            <div class="book-meta-row">
+                <div class="book-meta-title">Let Them - Mel Robbins</div>
+                <div class="book-meta-info">
+                    <span>Uploaded by : <strong>John</strong></span>
+                    <span>Email : <strong>xyz@gmail.com</strong></span>
+                </div>
+            </div>
+
+            <div class="reader-area">
+
+                <div class="page-navigator">
+                    <button class="page-nav-btn" onclick="changePage(-1)">
+                        <i class="fa fa-chevron-up"></i>
+                    </button>
+
+                    <div class="page-current" id="currentPage">1</div>
+                    <div class="page-total" id="totalPages">0</div>
+
+                    <button class="page-nav-btn" onclick="changePage(1)">
+                        <i class="fa fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div class="book-content-panel" id="pdfViewer">
+                    <div id="pdf-container"></div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+
+    <script>
+        const url = '/uploads/let-them.pdf';
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+        const container = document.getElementById('pdf-container');
+
+        // FIX: use the id so we always get the scrollable panel reliably
+        const viewer = document.getElementById('pdfViewer');
+
+        let pageWrappers = []; // store DOM refs to each page wrapper
+        let totalPages   = 0;
+        const scale      = 1.6;
+
+        // ── RENDER PDF ───────────────────────────────────────────────
+        pdfjsLib.getDocument(url).promise.then(function (pdf) {
+
+            totalPages = pdf.numPages;
+            document.getElementById("totalPages").textContent = totalPages;
+
+            // Render pages IN ORDER using a chain so page 1 is always first
+            let chain = Promise.resolve();
+
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                chain = chain.then((function (num) {
+                    return function () {
+                        return pdf.getPage(num).then(function (page) {
+
+                            const viewport = page.getViewport({ scale: scale });
+
+                            // Per-page wrapper
+                            const pageWrapper = document.createElement('div');
+                            pageWrapper.style.position     = 'relative';
+                            pageWrapper.style.display      = 'block';
+                            pageWrapper.style.width        = viewport.width + 'px';
+                            pageWrapper.style.marginBottom = '10px';
+                            pageWrapper.setAttribute('data-page', num);
+                            container.appendChild(pageWrapper);
+
+                            // Store reference in order
+                            pageWrappers[num - 1] = pageWrapper;
+
+                            // Canvas
+                            const canvas  = document.createElement('canvas');
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width  = viewport.width;
+                            canvas.classList.add('pdf-page');
+                            canvas.style.display = 'block';
+                            pageWrapper.appendChild(canvas);
+
+                            // Text layer
+                            const textLayerDiv = document.createElement('div');
+                            textLayerDiv.style.position = 'absolute';
+                            textLayerDiv.style.top      = '0';
+                            textLayerDiv.style.left     = '0';
+                            textLayerDiv.style.height   = viewport.height + 'px';
+                            textLayerDiv.style.width    = viewport.width + 'px';
+                            textLayerDiv.style.overflow = 'hidden';
+                            textLayerDiv.classList.add('pdf-text-layer');
+                            pageWrapper.appendChild(textLayerDiv);
+
+                            const renderTask = page.render({
+                                canvasContext: context,
+                                viewport: viewport
+                            }).promise;
+
+                            const textTask = page.getTextContent().then(function (textContent) {
+                                pdfjsLib.renderTextLayer({
+                                    textContent: textContent,
+                                    container:   textLayerDiv,
+                                    viewport:    viewport,
+                                    textDivs:    []
+                                });
+                            });
+
+                            return Promise.all([renderTask, textTask]);
+                        });
+                    };
+                })(pageNum));
+            }
+
+            chain.then(function () {
+                // Small delay so browser finishes layout before we measure offsets
+                setTimeout(updateCurrentPage, 200);
+            });
+        });
+
+        // ── GET CURRENT PAGE FROM SCROLL POSITION ────────────────────
+        // Uses offsetTop of each pageWrapper relative to the viewer (scrollable panel)
+        function getPageAtScroll() {
+            const scrollTop = viewer.scrollTop;
+            let current = 1;
+
+            for (let i = 0; i < pageWrappers.length; i++) {
+                // offsetTop is relative to offsetParent; we want relative to viewer
+                const wrapperTop = pageWrappers[i].offsetTop - container.offsetTop;
+                if (scrollTop + viewer.clientHeight * 0.3 >= wrapperTop) {
+                    current = i + 1;
+                }
+            }
+            return current;
+        }
+
+        function updateCurrentPage() {
+            document.getElementById('currentPage').textContent = getPageAtScroll();
+        }
+
+        // ── SCROLL EVENT — syncs page number on manual scroll ────────
+        viewer.addEventListener('scroll', function () {
+            updateCurrentPage();
+        });
+
+        // ── PAGE NAVIGATION BUTTONS ───────────────────────────────────
+        function changePage(direction) {
+            let current = parseInt(document.getElementById('currentPage').textContent);
+            current += direction;
+            if (current < 1) current = 1;
+            if (current > totalPages) current = totalPages;
+
+            const wrapper = pageWrappers[current - 1];
+            if (wrapper) {
+                // Scroll the viewer panel so the top of the page wrapper is at the top
+                const targetScrollTop = wrapper.offsetTop - container.offsetTop;
+                viewer.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+
+                // Update display immediately so it feels responsive
+                document.getElementById('currentPage').textContent = current;
+            }
+        }
+
+        // ── SEARCH ───────────────────────────────────────────────────
+        let currentMatchIndex = 0;
+        let allMatches        = [];
+
+        function escapeRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function doSearch() {
+            const query = document.getElementById('wordSearch').value.trim();
+
+            clearHighlights();
+            allMatches        = [];
+            currentMatchIndex = 0;
+
+            const searchInfo = document.getElementById('searchInfo');
+
+            if (!query) {
+                searchInfo.style.display = 'none';
+                return;
+            }
+
+            document.querySelectorAll('.pdf-text-layer span').forEach(function (span) {
+                const original = span.textContent;
+                if (!new RegExp(escapeRegex(query), 'gi').test(original)) return;
+
+                span.setAttribute('data-orig', original);
+
+                const newHtml = original.replace(
+                    new RegExp(escapeRegex(query), 'gi'),
+                    function (match) {
+                        return '<mark class="pdf-search-highlight">' + match + '</mark>';
+                    }
+                );
+                span.innerHTML = newHtml;
+
+                span.querySelectorAll('mark.pdf-search-highlight').forEach(function (m) {
+                    allMatches.push(m);
+                });
+            });
+
+            document.getElementById('searchCount').textContent = allMatches.length;
+            searchInfo.style.display = 'inline-flex';
+
+            if (allMatches.length > 0) {
+                jumpToMatch(0);
+            }
+        }
+
+        function jumpToMatch(index) {
+            allMatches.forEach(function (m) {
+                m.classList.remove('active-match');
+            });
+
+            if (allMatches.length === 0) return;
+
+            currentMatchIndex = ((index % allMatches.length) + allMatches.length) % allMatches.length;
+
+            const active = allMatches[currentMatchIndex];
+            active.classList.add('active-match');
+
+            const matchRect   = active.getBoundingClientRect();
+            const panelRect   = viewer.getBoundingClientRect();
+            const relativeTop = matchRect.top - panelRect.top + viewer.scrollTop;
+            viewer.scrollTo({
+                top:      relativeTop - viewer.clientHeight / 2 + matchRect.height / 2,
+                behavior: 'smooth'
+            });
+
+            // Also update page number when jumping to a match
+            setTimeout(updateCurrentPage, 400);
+        }
+
+        function jumpMatch(direction) {
+            jumpToMatch(currentMatchIndex + direction);
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('.pdf-text-layer span[data-orig]').forEach(function (span) {
+                span.textContent = span.getAttribute('data-orig');
+                span.removeAttribute('data-orig');
+            });
+        }
+
+        function clearSearch() {
+            document.getElementById('wordSearch').value = '';
+            clearHighlights();
+            allMatches        = [];
+            currentMatchIndex = 0;
+            document.getElementById('searchInfo').style.display = 'none';
+        }
+
+        // Enter key triggers search
+        document.getElementById('wordSearch').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') doSearch();
+        });
+
+        // Search icon click triggers search
+        document.getElementById('searchBtn').addEventListener('click', doSearch);
+    </script>
+
+</body>
+</html>
