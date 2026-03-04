@@ -9,7 +9,7 @@
 <div class="profile-page">
 
     <!-- Back Arrow -->
-    <a asp-action="Login" class="back-arrow">
+    <a asp-controller="Home" asp-action="Index" class="back-arrow">
         <img src="~/images/Back_Arrow_icon.png" />
     </a>
 
@@ -49,7 +49,7 @@
             <div class="field-box">@Model.Credit</div>
         </div>
 
-        <a asp-action="Logout" class="logout-btn">Logout</a>
+        <a asp-action="Login" class="logout-btn">Logout</a>
 
     </div>
 </div>

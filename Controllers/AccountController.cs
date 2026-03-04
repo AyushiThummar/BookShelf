@@ -1,12 +1,23 @@
 ﻿using BookShelf.Models;
 using BookShelf.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace BookShelf.Controllers
 {
     public class AccountController : Controller
     {
-        // ========== LOGIN ==========
+        private readonly IWebHostEnvironment _env;
+
+        public AccountController(IWebHostEnvironment env)
+        {
+            _env = env;
+        }
+
+        // ================= LOGIN =================
 
         public IActionResult Login()
         {
@@ -15,34 +26,75 @@ namespace BookShelf.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
+            // ===== ADMIN LOGIN =====
             if (model.Email == "admin@gmail.com" && model.Password == "1234")
             {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, "Admin"),
+                    new Claim(ClaimTypes.Role, "Admin")
+                };
+
+                var identity = new ClaimsIdentity(
+                    claims,
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    principal);
+
+                return RedirectToAction("Dashboard", "Admin");
+            }
+
+            // ===== NORMAL USER LOGIN (Temporary logic) =====
+            if (!string.IsNullOrEmpty(model.Email) &&
+                !string.IsNullOrEmpty(model.Password))
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, model.Email),
+                    new Claim(ClaimTypes.Role, "User")
+                };
+
+                var identity = new ClaimsIdentity(
+                    claims,
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    principal);
+
                 return RedirectToAction("Index", "Home");
             }
 
             ModelState.AddModelError("", "Invalid email or password");
             return View(model);
         }
-        public IActionResult AdminProfile1()
-        {
-            var admin = new AdminProfileViewModel
-            {
-                Name = "Admin",
-                Username = "acz123@gmail.com",
-                Number = "9946457894"
-            };
 
-            return View(admin);
+        // ================= LOGOUT =================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Redirect to guest dashboard
+            return RedirectToAction("Index", "Home");
         }
 
-        // ========== REGISTER ==========
+        // ================= REGISTER =================
 
         public IActionResult Register()
         {
@@ -55,9 +107,8 @@ namespace BookShelf.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO: Yaha database save logic aayega
-
-                return RedirectToAction("Login", "Account");
+                // TODO: Save to database later
+                return RedirectToAction("Login");
             }
 
             return View(model);
@@ -81,9 +132,47 @@ namespace BookShelf.Controllers
             return View(model);
         }
 
+        // ================= USER PROFILE =================
+
+        [Authorize(Roles = "User")]
+        public IActionResult UserProfile()
+        {
+            var user = new UserProfileViewModel
+            {
+                Name = TempData["Name"]?.ToString() ?? "Riya Patel",
+                Username = User.Identity?.Name,
+                Number = TempData["Number"]?.ToString() ?? "9946457894",
+                Credit = TempData["Credit"] != null ? Convert.ToInt32(TempData["Credit"]) : 2,
+                ProfileImage = TempData["Photo"]?.ToString() ?? "reg_profile.png"
+            };
+
+            TempData.Keep();
+
+            return View(user);
+        }
+
+        // ================= ADMIN PROFILE =================
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminProfile()
+        {
+            var admin = new AdminProfileViewModel
+            {
+                Name = "Admin",
+                Username = "admin@gmail.com",
+                Number = "9946457894"
+            };
+
+            return View(admin);
+        }
+
         // ================= NOTIFICATIONS =================
 
         public IActionResult Notifications()
+        {
+            return View();
+        }
+        public IActionResult AdminAboutUs()
         {
             return View();
         }
@@ -104,92 +193,34 @@ namespace BookShelf.Controllers
                 Vision = "To become a trusted online bookstore for readers everywhere.",
 
                 WhyChooseUsPoints = new List<string>
-        {
-            "Trusted Online Bookstore",
-            "Affordable Prices",
-            "Simple Shopping Experience",
-            "Great Customer Support"
-        },
+                {
+                    "Trusted Online Bookstore",
+                    "Affordable Prices",
+                    "Simple Shopping Experience",
+                    "Great Customer Support"
+                },
 
                 TeamMembers = new List<TeamMember>
-        {
-            new TeamMember { Name = "Tanvi", Email = "tanvi123@gmail.com" },
-            new TeamMember { Name = "Ayushi", Email = "ayushi123@gmail.com" },
-            new TeamMember { Name = "Mirali", Email = "mira123@gmail.com" }
-        },
+                {
+                    new TeamMember { Name = "Tanvi", Email = "tanvi123@gmail.com" },
+                    new TeamMember { Name = "Ayushi", Email = "ayushi123@gmail.com" },
+                    new TeamMember { Name = "Mirali", Email = "mira123@gmail.com" }
+                },
 
                 OfferItems = new List<OfferItem>
-        {
-            new OfferItem { Title = "Wide Selection", ImageUrl = "/images/books1.jpg" },
-            new OfferItem { Title = "Easy Online Ordering", ImageUrl = "/images/books2.jpg" },
-            new OfferItem { Title = "Nominal Price", ImageUrl = "/images/books3.jpg" }
-        }
+                {
+                    new OfferItem { Title = "Wide Selection", ImageUrl = "/images/books1.jpg" },
+                    new OfferItem { Title = "Easy Online Ordering", ImageUrl = "/images/books2.jpg" },
+                    new OfferItem { Title = "Nominal Price", ImageUrl = "/images/books3.jpg" }
+                }
             };
 
             return View(model);
         }
 
-        // ================= USER PROFILE =================
-        public IActionResult UserProfile()
-        {
-            var user = new UserProfileViewModel
-            {
-                Name = TempData["Name"]?.ToString() ?? "Riya Patel",
-                Username = "xyz123@gmail.com",
-                Number = TempData["Number"]?.ToString() ?? "9946457894",
-                Credit = TempData["Credit"] != null ? Convert.ToInt32(TempData["Credit"]) : 2,
-                ProfileImage = TempData["Photo"]?.ToString() ?? "reg_profile.png"
-            };
-
-            TempData.Keep();
-
-            return View(user);
-        }
-
-        public IActionResult AdminProfile()
-        {
-            var admin = new AdminProfileViewModel
-            {
-                Name = "Admin",
-                Username = "acz123@gmail.com",
-                Number = "9946457894"
-            };
-
-            return View(admin);
-        }
-
-        // ================= ADMIN ABOUT US =================
-
-        [HttpGet]
-        public IActionResult AdminAboutUs()
-        {
-            var model = new AboutUsViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult AdminAboutUs(AboutUsViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                // TODO: Save to database
-
-                TempData["Success"] = "About Us updated successfully!";
-                return RedirectToAction("AdminAboutUs");
-            }
-
-            return View(model);
-        }
         // ================= EDIT USER PROFILE =================
 
-        private readonly IWebHostEnvironment _env;
-
-        public AccountController(IWebHostEnvironment env)
-        {
-            _env = env;
-        }
-
-        // GET
+        [Authorize(Roles = "User")]
         public IActionResult EditUserProfile()
         {
             var model = new EditUserProfileViewModel
@@ -204,15 +235,14 @@ namespace BookShelf.Controllers
             return View(model);
         }
 
-        // POST
         [HttpPost]
+        [Authorize(Roles = "User")]
         public IActionResult EditUserProfile(EditUserProfileViewModel model)
         {
             if (ModelState.IsValid)
             {
                 string photoName = model.ExistingPhotoPath;
 
-                // PHOTO UPLOAD
                 if (model.Photo != null)
                 {
                     string uploadsFolder = Path.Combine(_env.WebRootPath, "images");
@@ -227,13 +257,13 @@ namespace BookShelf.Controllers
                     photoName = fileName;
                 }
 
-                // PASS UPDATED DATA USING TEMPDATA
                 TempData["Name"] = model.Name;
                 TempData["Number"] = model.Number;
                 TempData["Credit"] = model.Credit;
                 TempData["Photo"] = photoName;
 
-                return RedirectToAction("UserProfile");
+                // Redirect to dashboard instead of profile
+                return RedirectToAction("Index", "Home");
             }
 
             return View(model);

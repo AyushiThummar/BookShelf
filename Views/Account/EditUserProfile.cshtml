@@ -13,7 +13,6 @@
     <div class="profile-card">
 
         <form asp-action="EditUserProfile" method="post" enctype="multipart/form-data">
-
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="ExistingPhotoPath" />
 
@@ -34,7 +33,7 @@
             <div class="form-group">
                 <label>Name</label>
                 <div class="input-wrapper">
-                    <input asp-for="Name" class="form-input" id="nameField" disabled />
+                    <input asp-for="Name" class="form-input" id="nameField" readonly/>
                     <img src="~/images/edit.png"
                          class="edit-icon"
                          onclick="enableField('nameField')" />
@@ -45,7 +44,7 @@
             <div class="form-group">
                 <label>Number</label>
                 <div class="input-wrapper">
-                    <input asp-for="Number" class="form-input" id="numberField" disabled />
+                    <input asp-for="Number" class="form-input" id="numberField" readonly/>
                     <img src="~/images/edit.png"
                          class="edit-icon"
                          onclick="enableField('numberField')" />
@@ -56,7 +55,7 @@
             <div class="form-group">
                 <label>Credit</label>
                 <div class="input-wrapper">
-                    <input asp-for="Credit" class="form-input" id="creditField" disabled />
+                    <input asp-for="Credit" class="form-input" id="creditField" readonly />
                     <img src="~/images/edit.png"
                          class="edit-icon"
                          onclick="enableField('creditField')" />
@@ -67,8 +66,8 @@
             <div class="button-group">
                 <button type="submit" class="save-btn">Save Changes</button>
 
-                <a asp-action="UserProfile"
-                   asp-controller="Account"
+                <a asp-action="Index"
+                   asp-controller="Home"
                    class="cancel-btn">Cancel</a>
             </div>
 
@@ -79,7 +78,7 @@
 
 <script>
     function enableField(id) {
-        document.getElementById(id).removeAttribute("disabled");
+        document.getElementById(id).removeAttribute("readonly");
         document.getElementById(id).focus();
     }
 
