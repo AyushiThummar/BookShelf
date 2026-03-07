@@ -1,239 +1,594 @@
-﻿body {
+﻿/* ================================================================
+   auth.css — BookShelf Login
+   All 12 UX/UI principles applied:
+   ✓ Visual hierarchy   ✓ Clean inputs (white bg, border)
+   ✓ Full-width CTA     ✓ Checkbox alignment
+   ✓ Shadow card        ✓ Layout ratio 45/55
+   ✓ Guest button flow  ✓ Poppins typography
+   ✓ UX states          ✓ Accessibility contrast
+   ✓ 8px spacing system ✓ Micro-interactions
+   Fits 100vh — zero vertical scroll on laptops
+   ================================================================ */
+
+/* ── TOKENS ────────────────────────────────────────────────────── */
+:root {
+    --maroon: #7B2F2F;
+    --maroon-dark: #5f2222;
+    --maroon-ring: rgba(123, 47, 47, 0.18);
+    --navy: #264075;
+    --navy-sub: rgba(38, 64, 117, 0.68);
+    --right-from: #f2dfc0;
+    --right-to: #d9b47a;
+    --white: #ffffff;
+    --input-border: #DADADA;
+    --input-focus: #7B2F2F;
+    --input-error: #d63031;
+    --input-success: #27ae60;
+    --text-primary: #1a1a2e;
+    --text-secondary: #555770;
+    --text-light: #888;
+    --card-shadow: 0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+    --font: 'Poppins', system-ui, sans-serif;
+    --font-brand: 'Caveat', cursive;
+    --r-input: 8px;
+    --r-btn: 8px;
+    --r-card: 20px;
+    --ease: 0.2s ease;
+    /* 8px spacing scale */
+    --s1: 8px;
+    --s2: 16px;
+    --s3: 24px;
+    --s4: 32px;
+    --s5: 40px;
+    --s6: 48px;
+}
+
+/* ── RESET ─────────────────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* MAIN CONTAINER */
-.login-container {
+html, body {
+    height: 100%;
+    font-family: var(--font);
+    background: #6e2d2d;
+    -webkit-font-smoothing: antialiased;
+}
+
+    /* overflow:hidden ONLY on login page — scoped via body class */
+    html.page-login,
+    body.page-login {
+        overflow: hidden;
+    }
+
+/* ── BACKGROUND CANVAS ──────────────────────────────────────────── */
+#bg-canvas {
+    position: fixed;
+    inset: 0;
     width: 100%;
-    max-width: 1440px;
-    min-height: 100vh;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* soft vignette overlay — darkens edges slightly for depth */
+.page-wrap::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(40, 10, 10, 0.35) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.page-wrap::after {
+    display: none;
+}
+
+/* card above canvas */
+.login-card {
     position: relative;
-    margin: 0 auto; 
-    background: white;
-    font-family: 'Inter', sans-serif;
+    z-index: 1;
 }
 
-/* BRAND */
+/* ── PAGE WRAP ─────────────────────────────────────────────────── */
+.page-wrap {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--s2);
+}
+
+/* ── OUTER CARD ────────────────────────────────────────────────── */
+.login-card {
+    display: flex;
+    width: 100%;
+    max-width: 1080px;
+    height: min(660px, calc(100vh - 32px));
+    border-radius: var(--r-card);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
+    background: var(--white);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   LEFT PANEL  — 45%
+════════════════════════════════════════════════════════════════ */
+.left-panel {
+    flex: 0 0 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--s4) clamp(var(--s4), 5%, 52px);
+    gap: var(--s3);
+    background: var(--white);
+    overflow-y: auto;
+    /* hide scrollbar visually, allow scroll if needed */
+    scrollbar-width: none;
+}
+
+    .left-panel::-webkit-scrollbar {
+        display: none;
+    }
+
+/* ── BRAND ─────────────────────────────────────────────────────── */
 .brand {
-    position: absolute;
-    top: 4%;
-    left: 2%;
-    color: #823838;
-    font-size: 2rem;
-    font-family: 'Figma Hand', cursive;
+    font-family: var(--font-brand);
+    font-size: 1.75rem;
     font-weight: 700;
+    color: var(--maroon);
+    letter-spacing: 0.3px;
+    line-height: 1;
 }
 
-/* RIGHT IMAGE */
-
-.right-image {
-    width: 48%;
-    height: 93.5%;
-    aspect-ratio: 550 / 560;
-    right: 2.5%;
-    top: 3%;
-    position: absolute;
-    border-radius: 15px;
-    object-fit: cover;
-}
-
-/* WELCOME */
-.welcome-wrapper {
-    position: absolute;
-    top: 20%;
-    left: 3%;
-    width: 40%;
+/* ── WELCOME BLOCK ─────────────────────────────────────────────── */
+/* Heading → subtitle: 8px gap (--s1) */
+.welcome-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s1);
 }
 
 .welcome-title {
-    color: #264075;
-    font-size: 4vw;
+    font-size: clamp(1.75rem, 2.6vw, 2.1rem); /* 32–36px */
     font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.4px;
 }
 
 .welcome-sub {
-    color: rgba(38, 64, 117, 0.81);
-    font-size: 1.5vw;
+    font-size: 1rem; /* 16px */
+    color: var(--navy-sub);
+    font-weight: 400;
+    line-height: 1.5;
 }
 
-/* LOGIN BOX */
-.login-box {
-    position: absolute;
-    top: 55%;
-    left: 3%;
-    width: 45%;
-    height: 40vh;
-    background: rgba(248, 229, 229, 0.07);
-    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
-    border-radius: 15px;
-    border: 3px #803434 solid;
+/* ── FORM ──────────────────────────────────────────────────────── */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
-/* LABELS */
-.label-email {
-    position: absolute;
-    top: 60%;
-    left: 8%;
-    color: #823838;
-    font-size: 1.5vw;
-    font-weight: 700;
+/* ── FIELD GROUP — input→input: 16px ───────────────────────────── */
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: var(--s2); /* 16px between fields */
 }
 
-.label-password {
-    position: absolute;
-    top: 68%;
-    left: 8%;
-    color: #823838;
-    font-size: 1.5vw;
-    font-weight: 700;
-}
-
-/* INPUT */
-.input-email,
-.input-password {
-    position: absolute;
-    width: 28%;
-    height: 5vh;
-    left: 16%;
-    background: rgba(129,56,56,0.51);
-    border-radius: 10px;
-    border: none;
-    padding-left: 15px;
-    color: white;
-    font-size: 1vw;
-}
-
-.input-email {
-    top: 59%;
-}
-
-.input-password {
-    top: 67%;
-}
-
-/* REMEMBER */
-.remember-box {
-    position: absolute;
-    top: 73.5%;
-    left: 16%;
-}
-
-.remember-text {
-    position: absolute;
-    top: 74%;
-    left: 18%;
-    color: #264075;
-    font-size: 1vw;
+.f-label {
+    font-size: 0.875rem; /* 14px */
     font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.1px;
 }
 
-/* FORGOT */
-.forgot-link {
-    position: absolute;
-    top: 73.5%;
-    left: 33%;
-    color: #264075;
-    font-size: 1vw;
-    font-weight: 600;
-    text-decoration: none;
+/* ── INPUTS — white bg, 1px border ────────────────────────────── */
+.f-input {
+    width: 100%;
+    height: 48px;
+    background: var(--white);
+    border: 1.5px solid var(--input-border);
+    border-radius: var(--r-input);
+    padding: 0 44px 0 14px;
+    font-family: var(--font);
+    font-size: 0.9375rem; /* 15px */
+    font-weight: 400;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color var(--ease), box-shadow var(--ease), background var(--ease);
 }
 
-/* LOGIN BUTTON */
-.login-button {
+    .f-input::placeholder {
+        color: #BBBBBB;
+        font-weight: 400;
+    }
+
+    .f-input:hover:not(:focus) {
+        border-color: #BBBBBB;
+    }
+
+    .f-input:focus {
+        border-color: var(--input-focus);
+        box-shadow: 0 0 0 3px var(--maroon-ring);
+        background: #fffafa;
+    }
+
+/* error state */
+.f-input--error {
+    border-color: var(--input-error) !important;
+    box-shadow: 0 0 0 3px rgba(214, 48, 49, 0.14) !important;
+}
+
+/* success state */
+.f-input--success {
+    border-color: var(--input-success) !important;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.14) !important;
+}
+
+.f-error {
+    font-size: 0.8rem;
+    color: var(--input-error);
+    min-height: 16px;
+    font-weight: 500;
+    padding-left: 2px;
+}
+
+/* ── PASSWORD WRAP ─────────────────────────────────────────────── */
+.pw-wrap {
+    position: relative;
+}
+
+    .pw-wrap .f-input {
+        padding-right: 48px;
+    }
+
+.pw-toggle {
     position: absolute;
-    top: 82%;
-    left: 11%;
-    width: 28%;
-    height: 6vh;
-    background: #823838;
-    border-radius: 15px;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
     border: none;
-    color: white;
-    font-size: 1.5vw;
-    font-weight: 700;
+    padding: 3px;
+    cursor: pointer;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: color var(--ease), background var(--ease);
 }
 
-/* SIGNUP */
-.signup-text {
-    position: absolute;
-    top: 90%;
-    left: 17%;
-    font-size: 1vw;
+    .pw-toggle:hover {
+        color: var(--maroon);
+        background: rgba(123, 47, 47, 0.06);
+    }
+
+/* ── EXTRAS ROW — remember + forgot ───────────────────────────── */
+/* margin-bottom: 24px = --s3 (input → button) */
+.extras-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--s3);
 }
 
-.signup-link {
-    color: #823838;
-    font-weight: 700;
-    text-decoration: none;
+.remember-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--s1);
+    cursor: pointer;
+    user-select: none;
 }
 
-/* GUEST BUTTON */
-.guest-button {
-    width: 300px;
-    height: 40px;
-    left: 700px;
-    top: 520px;
-    position: absolute;
-    background: #823838;
-    border-radius: 15px;
-    border: none;
-    color: white;
-    font-size: 20px;
+.chk {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--maroon);
+    cursor: pointer;
+    flex-shrink: 0;
+    border-radius: 3px;
+}
+
+.chk-text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
-/* ---------------- MOBILE RESPONSIVE ---------------- */
+.forgot-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--maroon);
+    text-decoration: none;
+    transition: color var(--ease), text-decoration var(--ease);
+}
 
-@media screen and (max-width: 992px) {
-
-    .right-image {
-        position: relative;
-        width: 90%;
-        height: 300px;
-        margin: 20px auto;
-        display: block;
+    .forgot-link:hover {
+        color: var(--maroon-dark);
+        text-decoration: underline;
     }
 
-    .welcome-wrapper,
-    .login-box,
-    .label-email,
-    .label-password,
-    .input-email,
-    .input-password,
-    .remember-box,
-    .remember-text,
-    .forgot-link,
-    .login-button,
-    .signup-text,
-    .guest-button {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 90%;
-        margin: 10px auto;
-        display: block;
-        text-align: center;
+/* ── LOGIN BUTTON — full width, 48px, primary CTA ─────────────── */
+.btn-login {
+    width: 100%;
+    height: 48px;
+    background: var(--maroon);
+    border: none;
+    border-radius: var(--r-btn);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s1);
+    transition: background var(--ease), box-shadow var(--ease), transform 0.12s;
+    margin-bottom: var(--s3); /* 24px below button */
+    position: relative;
+}
+
+    .btn-login:hover {
+        background: var(--maroon-dark);
+        box-shadow: 0 6px 20px rgba(123, 47, 47, 0.3);
+    }
+
+    .btn-login:active {
+        transform: scale(0.985);
+        box-shadow: none;
+    }
+
+    .btn-login:disabled {
+        opacity: 0.75;
+        cursor: not-allowed;
+    }
+
+/* loading dots */
+.btn-loader {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    animation: blink 1.2s infinite ease-in-out;
+}
+
+    .dot:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .dot:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+@keyframes blink {
+    0%, 80%, 100% {
+        opacity: 0.25;
+        transform: scale(0.85);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ── DIVIDER ───────────────────────────────────────────────────── */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    margin-bottom: var(--s3);
+    color: #CCCCCC;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #EBEBEB;
+    }
+
+/* ── GUEST BUTTON — outlined secondary ────────────────────────── */
+.btn-guest {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 48px;
+    background: var(--white);
+    border: 1.5px solid var(--maroon);
+    border-radius: var(--r-btn);
+    color: var(--maroon);
+    font-family: var(--font);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: background var(--ease), color var(--ease), box-shadow var(--ease), transform 0.12s;
+    margin-bottom: var(--s3);
+}
+
+    .btn-guest:hover {
+        background: rgba(123, 47, 47, 0.05);
+        box-shadow: 0 4px 14px rgba(123, 47, 47, 0.14);
+    }
+
+    .btn-guest:active {
+        transform: scale(0.985);
+    }
+
+/* ── SIGN UP ROW ───────────────────────────────────────────────── */
+.signup-row {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-light);
+    font-weight: 400;
+}
+
+.signup-link {
+    color: var(--maroon);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+    transition: text-decoration var(--ease);
+}
+
+    .signup-link:hover {
+        text-decoration: underline;
+    }
+
+/* ════════════════════════════════════════════════════════════════
+   RIGHT PANEL — 55%
+════════════════════════════════════════════════════════════════ */
+.right-panel {
+    flex: 0 0 55%;
+    position: relative;
+    background: linear-gradient(145deg, var(--right-from) 0%, var(--right-to) 100%);
+    overflow: hidden;
+}
+
+    /* light sheen top-right */
+    .right-panel::before {
+        content: '';
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 240px;
+        height: 240px;
+        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 65%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+.right-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════════════ */
+
+/* Short laptops (≤ 700px tall) */
+@media screen and (min-width: 993px) and (max-height: 700px) {
+    .login-card {
+        height: calc(100vh - 24px);
+    }
+
+    .left-panel {
+        gap: var(--s2);
+        padding-top: var(--s3);
+        padding-bottom: var(--s3);
+    }
+
+    .field-group {
+        margin-bottom: var(--s1);
+    }
+
+    .extras-row {
+        margin-bottom: var(--s2);
+    }
+
+    .btn-login {
+        margin-bottom: var(--s2);
+    }
+
+    .divider {
+        margin-bottom: var(--s2);
+    }
+
+    .btn-guest {
+        margin-bottom: var(--s2);
     }
 
     .welcome-title {
-        font-size: 28px;
+        font-size: 1.6rem;
     }
 
-    .welcome-sub {
-        font-size: 16px;
+    .f-input {
+        height: 42px;
     }
 
-    .login-button,
-    .guest-button {
-        width: 90%;
-        font-size: 18px;
+    .btn-login,
+    .btn-guest {
+        height: 42px;
+    }
+}
+
+/* Medium laptops 993–1200px */
+@media screen and (min-width: 993px) and (max-width: 1200px) {
+    .left-panel {
+        padding-left: var(--s4);
+        padding-right: var(--s4);
+    }
+}
+
+/* Tablet + mobile */
+@media screen and (max-width: 992px) {
+
+    .page-wrap {
+        align-items: flex-start;
+        padding: 0;
     }
 
-    .input-email,
-    .input-password {
-        width: 90%;
-        height: 45px;
-        font-size: 14px;
+    .login-card {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        max-width: 100%;
+    }
+
+    .left-panel {
+        flex: none;
+        padding: var(--s4) var(--s3);
+        gap: var(--s3);
+        justify-content: flex-start;
+        overflow-y: visible;
+    }
+
+    .right-panel {
+        flex: none;
+        height: 260px;
+        order: -1; /* image on top on mobile */
+    }
+
+    .welcome-title {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .left-panel {
+        padding: var(--s3) var(--s2);
+    }
+
+    .welcome-title {
+        font-size: 1.5rem;
     }
 }

@@ -48,9 +48,18 @@ namespace BookShelf.Controllers
 
                 var principal = new ClaimsPrincipal(identity);
 
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = model.RememberMe,
+                    ExpiresUtc = model.RememberMe
+         ? DateTimeOffset.UtcNow.AddDays(30)
+         : DateTimeOffset.UtcNow.AddHours(1)
+                };
+
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
-                    principal);
+                    principal,
+                    authProperties);
 
                 return RedirectToAction("Dashboard", "Admin");
             }
@@ -71,9 +80,18 @@ namespace BookShelf.Controllers
 
                 var principal = new ClaimsPrincipal(identity);
 
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = model.RememberMe,
+                    ExpiresUtc = model.RememberMe
+         ? DateTimeOffset.UtcNow.AddDays(30)
+         : DateTimeOffset.UtcNow.AddHours(1)
+                };
+
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
-                    principal);
+                    principal,
+                    authProperties);
 
                 return RedirectToAction("Index", "Home");
             }
