@@ -1,16 +1,4 @@
-﻿/* ================================================================
-   auth.css — BookShelf Login
-   All 12 UX/UI principles applied:
-   ✓ Visual hierarchy   ✓ Clean inputs (white bg, border)
-   ✓ Full-width CTA     ✓ Checkbox alignment
-   ✓ Shadow card        ✓ Layout ratio 45/55
-   ✓ Guest button flow  ✓ Poppins typography
-   ✓ UX states          ✓ Accessibility contrast
-   ✓ 8px spacing system ✓ Micro-interactions
-   Fits 100vh — zero vertical scroll on laptops
-   ================================================================ */
-
-/* ── TOKENS ────────────────────────────────────────────────────── */
+﻿
 :root {
     --maroon: #7B2F2F;
     --maroon-dark: #5f2222;

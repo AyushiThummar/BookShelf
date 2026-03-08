@@ -1,177 +1,627 @@
-﻿body {
+﻿/* ================================================================
+   register.css — BookShelf Register
+   FIXES: title centered | input heights equal | columns bottom-align
+          | bigger profile | first/last stacked not side-by-side
+   ================================================================ */
+
+:root {
+    --maroon: #7B2F2F;
+    --maroon-dark: #5f2222;
+    --maroon-ring: rgba(123,47,47,0.18);
+    --navy: #264075;
+    --navy-sub: rgba(38,64,117,0.68);
+    --white: #ffffff;
+    --input-border: #DADADA;
+    --input-focus: #7B2F2F;
+    --input-error: #d63031;
+    --text-primary: #1a1a2e;
+    --text-light: #888;
+    --font: 'Poppins', system-ui, sans-serif;
+    --font-brand: 'Caveat', cursive;
+    --r-input: 8px;
+    --r-btn: 8px;
+    --r-card: 20px;
+    --ease: 0.2s ease;
+    /* fixed input height used on BOTH columns — same everywhere */
+    --input-h: 38px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Inter', sans-serif;
-    background: white;
 }
 
-.register-page {
-    text-align: center;
-    padding: 10px 15px 30px 15px;
+html, body {
+    height: 100%;
+    font-family: var(--font);
+    background: #6e2d2d;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* TITLE */
-.title {
-    font-size: 34px;
+    /* overflow hidden ONLY on the register page body — scoped so other pages are unaffected */
+    body.page-register {
+        overflow: hidden;
+    }
+
+/* ── CANVAS ─────────────────────────────────────────────────────── */
+#bg-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── PAGE WRAP ─────────────────────────────────────────────────── */
+.page-wrap {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+/* ── OUTER CARD ────────────────────────────────────────────────── */
+.reg-card {
+    width: 100%;
+    max-width: 1160px;
+    height: min(680px, calc(100vh - 32px));
+    border-radius: var(--r-card);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* form IS the flex row */
+.reg-form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   LEFT PANEL
+════════════════════════════════════════════════════════════════ */
+.panel-left {
+    flex: 0 0 67%;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    overflow: hidden;
+    padding: clamp(14px, 2.2vh, 24px) clamp(20px, 3vw, 36px);
+    gap: clamp(8px, 1.4vh, 16px);
+}
+
+/* ── HEADER: brand LEFT, title CENTERED ────────────────────────── */
+.left-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* brand | centre-zone | spacer */
+    align-items: center;
+    flex-shrink: 0;
+    border-bottom: 1px solid #f2f2f2;
+    padding-bottom: clamp(8px, 1.2vh, 12px);
+}
+
+.brand {
+    font-family: var(--font-brand);
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
     font-weight: 700;
-    color: #2f4675;
+    color: var(--maroon);
+    white-space: nowrap;
+    line-height: 1;
+    grid-column: 1;
+}
+
+/* welcome-block spans the true centre of the header */
+.welcome-block {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* ← title centred horizontally */
+    gap: 2px;
+}
+
+.welcome-title {
+    font-size: clamp(1.1rem, 1.8vw, 1.55rem);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+    text-align: center; /* ← centred text */
+}
+
+.welcome-sub {
+    font-size: clamp(0.7rem, 0.88vw, 0.8rem);
+    color: var(--navy-sub);
+    font-style: italic;
+    text-align: center;
+}
+
+/* invisible spacer mirrors brand width so centre is true centre */
+.header-spacer {
+    grid-column: 3;
+    visibility: hidden;
+    font-family: var(--font-brand);
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ── FIELDS AREA: two sub-columns, BOTTOM-ALIGNED ──────────────── */
+.fields-area {
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(16px, 3vw, 32px);
+    flex: 1;
+    min-height: 0;
+    overflow: visible; /* labels must not be clipped */
+}
+
+/* ── SUB-LEFT ────────────────────────────────────────────────────── */
+.sub-left {
+    flex: 0 0 42%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(8px, 1.1vh, 12px);
+    border-right: 1px solid #f2f2f2;
+    padding-right: clamp(16px, 2.5vw, 28px);
+    padding-bottom: 0;
+}
+
+/* ── PROFILE — bigger, centred ──────────────────────────────────── */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
     margin-bottom: 2px;
 }
 
-.subtitle {
-    font-size: 16px;
-    color: rgba(38,64,117,0.81);
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-/* CARD */
-.card-box {
-    max-width: 850px;
-    margin: auto;
-    background: rgba(189,147,117,0.10);
-    border-radius: 15px;
-    padding: 30px 35px;
-    display: flex;
-    justify-content: center; /* FIXED */
-    gap: 40px;
-    flex-wrap: wrap;
-}
-
-/* LEFT + RIGHT SIDE BALANCED */
-.left-section,
-.right-section {
-    width: calc(50% - 20px); /* PERFECT BALANCE */
-}
-
-/* ONLY IMAGE CENTERED */
-.profile-wrapper {
+.profile-ring-wrap {
     position: relative;
-    width: 300px;
-    height: 300px;
-    margin: 0 auto 35px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+    /* subtle slow-spinning dashed ring */
+    .profile-ring-wrap::before {
+        content: '';
+        position: absolute;
+        width: calc(100% + 14px);
+        height: calc(100% + 14px);
+        border-radius: 50%;
+        border: 2px dashed rgba(123,47,47,0.20);
+        animation: spin-slow 20s linear infinite;
+        pointer-events: none;
+    }
+
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* FIX 4: bigger profile — 130px fixed, clear and prominent */
+.profile-ring {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid rgba(123,47,47,0.20);
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(123,47,47,0.14);
+    transition: border-color var(--ease), box-shadow var(--ease), transform var(--ease);
+}
+
+    .profile-ring:hover {
+        border-color: var(--maroon);
+        box-shadow: 0 6px 24px rgba(123,47,47,0.26);
+        transform: scale(1.04);
+    }
 
 .profile-img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
     border-radius: 50%;
     display: block;
 }
 
-.camera-img {
+.profile-overlay {
     position: absolute;
-    bottom: -10px;
-    right: 35px;
-    width: 45px;
-}
-
-form {
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(95,34,34,0.48);
     display: flex;
-    flex-direction: column;
-}
-
-.form-group {
-    margin-bottom: 8px;
-    text-align: left;
-}
-
-label {
-    font-weight: 700;
-    color: #823838;
-    margin-bottom: 4px;
-    display: block;
-    font-size: 14px;
-}
-
-input,
-textarea {
-    width: 100%;
-    height: 40px;
-    border-radius: 12px;
-    border: none;
-    padding-left: 15px;
-    margin-top: 5px;
-    background: rgba(129,56,56,0.51);
-    color: white;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-textarea {
-    height: 80px;
-    padding: 10px;
-    resize: none;
-}
-
-/* BUTTON */
-.btn-wrapper {
-    width: 100%;
-    margin-top: 3px;
-    display: flex;
+    align-items: center;
     justify-content: center;
+    opacity: 0;
+    transition: opacity var(--ease);
 }
 
-.register-btn {
-    width: 180px;
-    height: 42px;
-    border-radius: 12px;
-    border: none;
-    background: #823838;
-    color: white;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
+.profile-ring:hover .profile-overlay {
+    opacity: 1;
 }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
+.camera-icon {
+    width: 24px;
+    filter: brightness(0) invert(1);
+    opacity: 0.92;
+}
 
-    .card-box {
-        flex-direction: column;
-        padding: 25px;
-    }
+.profile-hint {
+    font-size: 0.72rem;
+    color: var(--maroon);
+    font-weight: 500;
+    opacity: 0.65;
+}
 
-    .left-section,
-    .right-section {
+/* FIX 5: First + Last stacked, NOT side by side */
+.name-row {
+    display: flex;
+    flex-direction: column; /* stacked */
+    gap: clamp(8px, 1.1vh, 12px);
+}
+
+    .name-row .field-group {
         width: 100%;
     }
 
-    .profile-wrapper {
-        width: 240px;
-        height: 240px;
-        margin: 0 auto 25px auto;
+/* ── SUB-RIGHT ───────────────────────────────────────────────────── */
+.sub-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: visible; /* never clip labels */
+}
+
+/* ── KILL browser autofill yellow background ─────────────────────── */
+.f-input:-webkit-autofill,
+.f-input:-webkit-autofill:hover,
+.f-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    -webkit-text-fill-color: var(--text-primary);
+    transition: background-color 99999s ease-in-out 0s;
+}
+
+/* ── SHARED FIELD STYLES ─────────────────────────────────────────── */
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: clamp(6px, 1vh, 10px);
+}
+
+    .field-group:last-child {
+        margin-bottom: 0;
     }
 
-    .camera-img {
-        width: 35px;
-        right: 30px;
+.f-label {
+    font-size: clamp(0.72rem, 0.85vw, 0.8rem);
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.1px;
+}
+
+/* FIX 1+2: same fixed height on ALL inputs in both columns */
+.f-input {
+    width: 100%;
+    height: var(--input-h); /* ← unified height */
+    background: var(--white);
+    border: 1.5px solid var(--input-border);
+    border-radius: var(--r-input);
+    padding: 0 12px;
+    font-family: var(--font);
+    font-size: clamp(0.75rem, 0.88vw, 0.84rem);
+    font-weight: 400;
+    color: var(--text-primary);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color var(--ease), box-shadow var(--ease), background var(--ease);
+}
+
+    .f-input::placeholder {
+        color: #BBBBBB;
+    }
+
+    .f-input:hover:not(:focus) {
+        border-color: #BBBBBB;
+    }
+
+    .f-input:focus {
+        border-color: var(--input-focus);
+        box-shadow: 0 0 0 3px var(--maroon-ring);
+        background: #fffafa;
+    }
+
+/* select chevron */
+.f-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' fill='none' viewBox='0 0 24 24' stroke='%23888' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+    padding-right: 30px;
+    cursor: pointer;
+}
+
+/* textarea — taller than normal input */
+.f-textarea {
+    height: clamp(56px, 8vh, 72px);
+    padding: 8px 12px;
+    resize: none;
+    line-height: 1.5;
+}
+
+.f-error {
+    font-size: 0.7rem;
+    color: var(--input-error);
+    min-height: 12px;
+    font-weight: 500;
+}
+
+/* password wrap */
+.pw-wrap {
+    position: relative;
+}
+
+    .pw-wrap .f-input {
+        padding-right: 36px;
+    }
+
+.pw-toggle {
+    position: absolute;
+    right: 10px;
+    top: calc(var(--input-h) / 2);
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 3px;
+    cursor: pointer;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: color var(--ease), background var(--ease);
+}
+
+    .pw-toggle:hover {
+        color: var(--maroon);
+        background: rgba(123,47,47,0.06);
+    }
+
+/* ── FORM FOOTER — centred button ───────────────────────────────── */
+.form-footer {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid #f2f2f2;
+    padding-top: clamp(8px, 1.4vh, 14px);
+}
+
+.btn-register {
+    width: clamp(200px, 42%, 320px);
+    height: clamp(38px, 5vh, 46px);
+    background: var(--maroon);
+    border: none;
+    border-radius: var(--r-btn);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background var(--ease), box-shadow var(--ease), transform 0.12s;
+}
+
+    .btn-register:hover {
+        background: var(--maroon-dark);
+        box-shadow: 0 5px 18px rgba(123,47,47,0.28);
+    }
+
+    .btn-register:active {
+        transform: scale(0.985);
+        box-shadow: none;
+    }
+
+    .btn-register:disabled {
+        opacity: 0.75;
+        cursor: not-allowed;
+    }
+
+.btn-loader {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    animation: blink 1.2s infinite ease-in-out;
+}
+
+    .dot:nth-child(2) {
+        animation-delay: .2s;
+    }
+
+    .dot:nth-child(3) {
+        animation-delay: .4s;
+    }
+
+@keyframes blink {
+    0%,80%,100% {
+        opacity: .25;
+        transform: scale(.85);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.signin-row {
+    font-size: clamp(0.72rem, 0.85vw, 0.8rem);
+    color: var(--text-light);
+}
+
+.signin-link {
+    color: var(--maroon);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 3px;
+}
+
+    .signin-link:hover {
+        text-decoration: underline;
+    }
+
+/* ════════════════════════════════════════════════════════════════
+   RIGHT PANEL
+════════════════════════════════════════════════════════════════ */
+.panel-right {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(145deg, #f2dfc0 0%, #d9b47a 100%);
+    overflow: hidden;
+}
+
+    .panel-right::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.26) 0%, transparent 65%);
+        pointer-events: none;
+    }
+
+.right-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════════════ */
+@media (min-width: 993px) and (max-height: 700px) {
+    :root {
+        --input-h: 33px;
+    }
+
+    .panel-left {
+        padding: 12px 24px;
+        gap: 8px;
+    }
+
+    .left-header {
+        padding-bottom: 8px;
+    }
+
+    .profile-ring {
+        width: 100px;
+        height: 100px;
+    }
+
+    .f-textarea {
+        height: 52px;
+    }
+
+    .btn-register {
+        height: 36px;
+    }
+}
+
+@media (max-width: 992px) {
+    html, body {
+        overflow: auto;
+    }
+
+    .page-wrap {
+        height: auto;
+        min-height: 100vh;
+        align-items: flex-start;
+        padding: 12px;
+    }
+
+    .reg-card {
+        height: auto;
+        max-width: 100%;
+        border-radius: 14px;
+    }
+
+    .reg-form {
+        flex-direction: column;
+    }
+
+    .panel-left {
+        flex: none;
+        padding: 20px;
+        gap: 14px;
+    }
+
+    .panel-right {
+        display: none;
+    }
+
+    .fields-area {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    .sub-left {
+        flex: none;
+        border-right: none;
+        border-bottom: 1px solid #f2f2f2;
+        padding-right: 0;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+    }
+
+    .left-header {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 4px;
+    }
+
+    .header-spacer {
+        display: none;
+    }
+
+    .btn-register {
+        width: 100%;
+        height: 46px;
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
-
-    .title {
-        font-size: 26px;
-    }
-
-    .subtitle {
-        font-size: 14px;
-    }
-
-    .profile-wrapper {
-        width: 180px;
-        height: 180px;
-    }
-
-    input,
-    textarea {
-        font-size: 13px;
-    }
-
-    .register-btn {
-        width: 150px;
-        height: 38px;
-        font-size: 14px;
+    .panel-left {
+        padding: 16px;
     }
 }
