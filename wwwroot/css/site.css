@@ -84,6 +84,9 @@ body {
         text-align: center;
         font-size: 18px;
     }
+.admin-layout .sidebar {
+    width: 250px;
+}
 /* CONTENT */
 .content {
     flex: 1;
