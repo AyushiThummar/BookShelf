@@ -14,6 +14,6 @@ namespace BookShelf.Models
 
         // Navigation
         public List<Book> Books { get; set; } = new();
-        //public List<Ebook> Ebooks { get; set; } = new();
+        public List<Ebook> Ebooks { get; set; } = new();
     }
 }
