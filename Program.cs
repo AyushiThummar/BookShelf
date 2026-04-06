@@ -51,4 +51,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+// Seed roles on startup
+using (var scope = app.Services.CreateScope())
+{
+    await BookShelf.Data.DbSeeder.SeedRolesAsync(scope.ServiceProvider);
+}
 app.Run();
