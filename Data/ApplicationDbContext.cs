@@ -17,5 +17,29 @@ namespace BookShelf.Data
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Review> Reviews { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Book prices
+            modelBuilder.Entity<Book>()
+                .Property(b => b.SellingPrice)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Book>()
+                .Property(b => b.ActualPrice)
+                .HasColumnType("decimal(18,2)");
+
+            // Order total
+            modelBuilder.Entity<Order>()
+                .Property(o => o.TotalAmount)
+                .HasColumnType("decimal(18,2)");
+
+            // Order item price
+            modelBuilder.Entity<OrderItem>()
+                .Property(oi => oi.Price)
+                .HasColumnType("decimal(18,2)");
+        }
     }
 }
