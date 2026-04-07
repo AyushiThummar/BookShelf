@@ -41,7 +41,7 @@
                  class="book-preview-img"
                  src="https://placehold.co/200x300/e8d5c4/7a3030?text=Book+Cover"
                  alt="Book Cover" />
-            <input type="file" id="photoInput" accept="image/*" />
+                <input name="photoInput" type="file" id="photoInput" accept="image/*" />
             <button class="btn-upload-photo" type="button"
                     onclick="document.getElementById('photoInput').click()">
                 <i class="fa fa-upload"></i> Upload Photo
@@ -50,6 +50,8 @@
 
         <!-- ── RIGHT: FORM PANEL ── -->
         <div class="form-panel">
+<form asp-controller="Books" asp-action="UploadBook" method="post" enctype="multipart/form-data">
+@Html.AntiForgeryToken()
 
             <!-- BOOK DETAILS -->
             <div class="section-title">Book Details</div>
@@ -58,7 +60,7 @@
             <div class="form-row">
                 <div class="field-group">
                     <label class="field-label" for="bookTitle">Book Title <span class="req">*</span></label>
-                    <input class="field-input" id="bookTitle" type="text"
+                            <input name="bookTitle" class="field-input" id="bookTitle" type="text"
                            placeholder="e.g. Mathematics Part I" />
                     <span class="error-msg" id="err-bookTitle">Book title is required.</span>
                 </div>
@@ -66,7 +68,7 @@
                     <label class="field-label" for="sellingPrice">Selling Price (&#8377;) <span class="req">*</span></label>
                     <div class="input-wrapper">
                         <span class="input-prefix">&#8377;</span>
-                        <input class="field-input" id="sellingPrice" type="number"
+                                <input name="sellingPrice" class="field-input" id="sellingPrice" type="number"
                                min="0" placeholder="e.g. 140" />
                     </div>
                     <span class="error-msg" id="err-sellingPrice">Enter a valid selling price.</span>
@@ -77,7 +79,7 @@
             <div class="form-row">
                 <div class="field-group">
                     <label class="field-label" for="author">Author <span class="req">*</span></label>
-                    <input class="field-input" id="author" type="text"
+                            <input name="author" class="field-input" id="author" type="text"
                            placeholder="e.g. NCERT" />
                     <span class="error-msg" id="err-author">Author name is required.</span>
                 </div>
@@ -88,7 +90,7 @@
                     </label>
                     <div class="input-wrapper">
                         <span class="input-prefix">&#8377;</span>
-                        <input class="field-input" id="actualPrice" type="number"
+                                <input name="actualPrice" class="field-input" id="actualPrice" type="number"
                                min="0" placeholder="e.g. 240" />
                     </div>
                     <span class="error-msg" id="err-actualPrice">Enter a valid price.</span>
@@ -100,7 +102,7 @@
                 <div class="field-group">
                     <label class="field-label" for="category">Category <span class="req">*</span></label>
                     <div class="select-wrapper">
-                        <select class="field-select" id="category" onchange="handleCategoryChange()">
+                                <select name="category" class="field-select" id="category" onchange="handleCategoryChange()">
                             <option value="" disabled selected>Select category</option>
                             <option value="academic">Academic / Education</option>
                                 <option value="kids">Kids</option>
@@ -116,7 +118,7 @@
                 <div class="field-group">
                     <label class="field-label" for="condition">Book Condition <span class="req">*</span></label>
                     <div class="select-wrapper">
-                        <select class="field-select" id="condition">
+                                <select name="condition" class="field-select" id="condition">
                             <option value="" disabled selected>Select condition</option>
                             <option value="new">New</option>
                             <option value="used">Used</option>
@@ -131,7 +133,7 @@
                 <div class="field-group">
                     <label class="field-label" for="language">Language <span class="req">*</span></label>
                     <div class="select-wrapper">
-                        <select class="field-select" id="language">
+                                <select name="language" class="field-select" id="language">
                             <option value="" disabled selected>Select language</option>
                             <option value="english">English</option>
                             <option value="hindi">Hindi</option>
@@ -154,7 +156,7 @@
                         <span id="eduNote" style="font-weight:400;color:#999;font-size:11px;margin-left:3px;">(Academic only)</span>
                     </label>
                     <div class="select-wrapper">
-                        <select class="field-select" id="educationLevel" disabled
+                                <select name="educationLevel" class="field-select" id="educationLevel" disabled
                                 style="opacity:0.45; cursor:not-allowed;">
                             <option value="" disabled selected>Select category first</option>
                             <option value="primary">Primary (1-5)</option>
@@ -175,7 +177,7 @@
             <div class="form-row">
                 <div class="field-group" style="grid-column: 1 / -1;">
                     <label class="field-label" for="description">Description <span class="req">*</span></label>
-                    <textarea class="field-textarea" id="description"
+                            <textarea name="description" class="field-textarea" id="description"
                               placeholder="Short description of the book..."></textarea>
                     <span class="error-msg" id="err-description">Description must be at least 10 characters.</span>
                 </div>
@@ -188,7 +190,7 @@
             <div class="form-row">
                 <div class="field-group">
                     <label class="field-label" for="username">Username <span class="req">*</span></label>
-                    <input class="field-input" id="username" type="text"
+                            <input name="location" class="field-input" id="username" type="text"
                            placeholder="Enter your username" />
                     <span class="error-msg" id="err-username">Username is required.</span>
                 </div>
@@ -221,7 +223,9 @@
 
             <!-- SUBMIT -->
             <div class="submit-area">
-                <button class="btn-submit" id="submitBtn" type="button" onclick="handleSubmit()">
+                        <button class="btn-submit" id="submitBtn" type="submit">
+                            <i class="fa fa-paper-plane" style="margin-right:7px;"></i>Submit
+                        </button>
                     <i class="fa fa-paper-plane" style="margin-right:7px;"></i>Submit
                 </button>
                 <div class="success-msg" id="successMsg">
@@ -229,7 +233,7 @@
                     Submitted Successfully!! Redirecting...
                 </div>
             </div>
-
+            </form>
         </div>
     </div>
 </div>
