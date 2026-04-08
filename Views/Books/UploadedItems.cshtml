@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="item-actions">
-                        <a href="/Home/BookDetails?id=@book.Id" class="view-icon">
+                        <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="view-icon">
                             <i class="fa-regular fa-eye"></i>
                         </a>
                         <a href="/Books/DeleteBook/@book.Id"

@@ -151,5 +151,21 @@ namespace BookShelf.Controllers
 
             return RedirectToAction("UploadedItems");
         }
+        // ================= BOOK DETAILS =================
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var book = await _db.Books
+                .Include(b => b.Category)
+                .Include(b => b.Uploader)
+                .Include(b => b.Reviews)
+                .ThenInclude(r => r.User)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (book == null)
+                return NotFound();
+
+            return View("~/Views/Home/BookDetails.cshtml", book);
+        }
     }
 }

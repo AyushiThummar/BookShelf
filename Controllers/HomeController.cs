@@ -1,16 +1,20 @@
 using System.Diagnostics;
 using BookShelf.Models;
 using Microsoft.AspNetCore.Mvc;
+using BookShelf.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookShelf.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
         {
             _logger = logger;
+            _db = db;
         }
 
         public IActionResult Index()
@@ -21,13 +25,17 @@ namespace BookShelf.Controllers
         {
             return View();
         }
-        public IActionResult BookDetails()
+        public IActionResult BookDetails(int id)
         {
-            return View();
-        }
-        public IActionResult UploaderInfo()
-        {
-            return View();
+            var book = _db.Books
+                .Include(b => b.Category)
+                .Include(b => b.Uploader)
+                .Include(b => b.Reviews)
+                .FirstOrDefault(b => b.Id == id);
+
+            if (book == null) return NotFound();
+
+            return View(book);
         }
         public IActionResult Ebooks()
         {
@@ -51,6 +59,14 @@ namespace BookShelf.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public async Task<IActionResult> UploaderInfo(int id)
+        {
+            var book = await _db.Books
+                .Include(b => b.Uploader)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            return View(book);
         }
     }
 }
