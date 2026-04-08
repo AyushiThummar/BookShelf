@@ -19,7 +19,13 @@ namespace BookShelf.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var books = _db.Books
+                .Include(b => b.Category)   // for category name
+                .Where(b => b.IsAvailable)  // only available books
+                .OrderByDescending(b => b.CreatedAt)
+                .ToList();
+
+            return View(books);
         }
         public IActionResult Category()
         {
