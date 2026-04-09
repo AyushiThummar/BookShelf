@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using BookShelf.Models;
 using Microsoft.AspNetCore.Mvc;
 using BookShelf.Data;
@@ -19,9 +19,14 @@ namespace BookShelf.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
+
             var books = _db.Books
-                .Include(b => b.Category)   // for category name
-                .Where(b => b.IsAvailable)  // only available books
+                .Include(b => b.Category)
+                .Where(b => b.IsAvailable)
                 .OrderByDescending(b => b.CreatedAt)
                 .ToList();
 
