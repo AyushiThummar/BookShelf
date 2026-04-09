@@ -19,16 +19,25 @@ namespace BookShelf.Controllers
 
         public IActionResult Index()
         {
-            if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-            {
-                return RedirectToAction("Dashboard", "Admin");
-            }
-
             var books = _db.Books
                 .Include(b => b.Category)
-                .Where(b => b.IsAvailable)
-                .OrderByDescending(b => b.CreatedAt)
+                .OrderByDescending(b => b.Id)
                 .ToList();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+                var wishlistBookIds = _db.WishlistItems
+                    .Where(w => w.UserId == userId)
+                    .Select(w => w.BookId)
+                    .ToList();
+
+                foreach (var book in books)
+                {
+                    book.IsInWishlist = wishlistBookIds.Contains(book.Id);
+                }
+            }
 
             return View(books);
         }
@@ -60,14 +69,26 @@ namespace BookShelf.Controllers
         }
         public IActionResult CategoryBooks(int id)
         {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
             var books = _db.Books
                 .Include(b => b.Category)
-                .Where(b => b.CategoryId == id && b.IsAvailable)
+                .Where(b => b.CategoryId == id)
+                .OrderByDescending(b => b.Id) // latest first
                 .ToList();
 
-            var category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            if (User.Identity.IsAuthenticated)
+            {
+                var wishlistBookIds = _db.WishlistItems
+                    .Where(w => w.UserId == userId)
+                    .Select(w => w.BookId)
+                    .ToList();
 
-            ViewBag.CategoryName = category?.Name;
+                foreach (var book in books)
+                {
+                    book.IsInWishlist = wishlistBookIds.Contains(book.Id);
+                }
+            }
 
             return View(books);
         }
