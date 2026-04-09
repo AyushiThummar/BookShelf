@@ -34,7 +34,8 @@ namespace BookShelf.Controllers
         }
         public IActionResult Category()
         {
-            return View();
+            var categories = _db.Categories.ToList();
+            return View(categories);
         }
         public IActionResult BookDetails(int id)
         {
@@ -56,10 +57,18 @@ namespace BookShelf.Controllers
         {
             return View();
         }
-        public IActionResult CategoryBooks(string category)
+        public IActionResult CategoryBooks(int id)
         {
-            ViewBag.Category = category ?? "Books";
-            return View();
+            var books = _db.Books
+                .Include(b => b.Category)
+                .Where(b => b.CategoryId == id && b.IsAvailable)
+                .ToList();
+
+            var category = _db.Categories.FirstOrDefault(c => c.Id == id);
+
+            ViewBag.CategoryName = category?.Name;
+
+            return View(books);
         }
         public IActionResult Privacy()
         {
