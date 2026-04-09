@@ -43,6 +43,7 @@ namespace BookShelf.Controllers
                 .Include(b => b.Category)
                 .Include(b => b.Uploader)
                 .Include(b => b.Reviews)
+                    .ThenInclude(r => r.User)
                 .FirstOrDefault(b => b.Id == id);
 
             if (book == null) return NotFound();
@@ -87,6 +88,38 @@ namespace BookShelf.Controllers
                 .FirstOrDefaultAsync(b => b.Id == id);
 
             return View(book);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddReview(int BookId, string Comment, int Rating)
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            var review = new Review
+            {
+                BookId = BookId,
+                Comment = Comment,
+                Rating = Rating,
+                UserId = userId
+            };
+
+            _db.Reviews.Add(review);
+            await _db.SaveChangesAsync();
+
+            // 🔥 Update average rating
+            var book = await _db.Books
+                .Include(b => b.Reviews)
+                .FirstOrDefaultAsync(b => b.Id == BookId);
+
+            if (book != null && book.Reviews.Any())
+            {
+                book.Rating = book.Reviews.Average(r => r.Rating);
+                await _db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("BookDetails", new { id = BookId });
         }
     }
 }
