@@ -89,6 +89,7 @@ button.back-btn {
     padding: 13px 8px;
     border-radius: 10px;
     cursor: pointer;
+    text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -38,10 +38,10 @@
             <div class="btn-row">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <button class="btn-main" onclick="window.location.href='/Order/Cart'">
+                    <a class="btn-main" href="/Order/AddToCart/@Model.Id">
                         <i class="fa fa-shopping-cart"></i>
                         Add to cart
-                    </button>
+                    </a>
                 }
                 else
                 {
@@ -53,10 +53,10 @@
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <button class="btn-main" onclick="window.location.href='/Order/Checkout'">
-                        <i class="fa-solid fa-sack-dollar"></i>
-                        Buy now
-                    </button>
+                    <a class="btn-main" href="/Order/AddToCart/@Model.Id?buyNow=true">
+    <i class="fa-solid fa-sack-dollar"></i>
+    Buy now
+</a>
                 }
                 else
                 {
@@ -97,13 +97,13 @@
                 <div>
                     <span class="actual-label">Actual Price</span>
                     <div style="display:flex; align-items:baseline; gap:12px;">
-                        <span class="price-main">₹@Model.SellingPrice</span>
-                        <span class="price-old">₹@Model.ActualPrice</span>
+                        <span class="price-main">₹@Model.ActualPrice</span>
+                        <span class="price-old">₹@Model.SellingPrice</span>
+                        
                     </div>
                 </div>
-
                 @{
-                    var save = (Model.ActualPrice ?? 0) - Model.SellingPrice;
+                    var save = Model.SellingPrice - (Model.ActualPrice ?? 0) ;
                 }
                 <span class="price-save">🎉 Save ₹@save</span>
             </div>
