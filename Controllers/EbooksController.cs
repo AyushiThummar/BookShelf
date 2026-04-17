@@ -119,4 +119,30 @@ public class EbooksController : Controller
 
         return File(bytes, "application/pdf", downloadName);
     }
+    public class ReactionRequest
+    {
+        public int EbookId { get; set; }
+        public string Type { get; set; }
+    }
+    [HttpPost]
+    public IActionResult ToggleLike([FromBody] ReactionRequest request)
+    {
+        var ebook = _db.Ebooks.FirstOrDefault(e => e.Id == request.EbookId);
+
+        if (ebook == null)
+            return NotFound();
+
+        if (request.Type == "like")
+            ebook.Likes++;
+        else if (request.Type == "dislike")
+            ebook.Dislikes++;
+
+        _db.SaveChanges();
+
+        return Json(new
+        {
+            likes = ebook.Likes,
+            dislikes = ebook.Dislikes
+        });
+    }
 }
