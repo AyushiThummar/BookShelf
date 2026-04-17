@@ -39,18 +39,18 @@
                     <i class="fa fa-download"></i> Download
                 </a>
 
-                <a href="#" class="action-icon-btn">
+                @* <a href="#" class="action-icon-btn">
                     <i class="fa-regular fa-bookmark"></i>
-                </a>
+                </a> *@
 
-                <a href="#" class="action-icon-btn">
+                <a href="javascript:void(0)" onclick="sendReaction('like')" class="action-icon-btn">
                     <i class="fa-regular fa-thumbs-up"></i>
-                    <span>1.8k</span>
+                    <span id="likeCount">@Model.Likes</span>
                 </a>
 
-                <a href="#" class="action-icon-btn">
+                <a href="javascript:void(0)" onclick="sendReaction('dislike')" class="action-icon-btn">
                     <i class="fa-regular fa-thumbs-down"></i>
-                    <span>5</span>
+                    <span id="dislikeCount">@Model.Dislikes</span>
                 </a>
 
                 <div class="action-search-box">
@@ -357,6 +357,25 @@
 
         // Search icon click triggers search
         document.getElementById('searchBtn').addEventListener('click', doSearch);
+
+        function sendReaction(type) {
+            fetch('/Ebooks/ToggleLike', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ebookId: @Model.Id,
+                    type: type
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('likeCount').textContent = data.likes;
+                document.getElementById('dislikeCount').textContent = data.dislikes;
+            })
+            .catch(err => console.log(err));
+        }
     </script>
 
 </body>
